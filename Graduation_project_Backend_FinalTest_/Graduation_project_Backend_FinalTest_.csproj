@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\Graduation_Project_Backend-main\Graduation_Project_Backend.csproj" />
+    <ProjectReference Include="..\Backend\Graduation_Project_Backend.csproj" />
   </ItemGroup>
 
   <ItemGroup>

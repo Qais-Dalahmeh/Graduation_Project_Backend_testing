@@ -1,0 +1,21 @@
+{
+  "name": "mall-loyalty-e2e",
+  "version": "1.0.0",
+  "description": "Behavioral E2E tests for Mall Loyalty System Backend",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:ci": "playwright test --reporter=list,junit",
+    "install:browsers": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0",
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0",
+    "@types/pg": "^8.11.0"
+  }
+}

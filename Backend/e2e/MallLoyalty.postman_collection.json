@@ -1,0 +1,1179 @@
+{
+  "info": {
+    "name": "Mall Loyalty System — Full Test Suite",
+    "description": "Automated API tests covering Auth, Transactions, Coupons, Stores, Offers, Announcements, Dashboard, Chatbot.\nRun with Newman: npx newman run MallLoyalty.postman_collection.json -e MallLoyalty.postman_environment.json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",               "value": "http://localhost:5000" },
+    { "key": "mallId",                "value": "" },
+    { "key": "storeId",               "value": "" },
+    { "key": "managerId",             "value": "" },
+    { "key": "sessionId",             "value": "" },
+    { "key": "managerSessionId",      "value": "" },
+    { "key": "userPhone",             "value": "" },
+    { "key": "transactionId",         "value": "" },
+    { "key": "couponId",              "value": "" },
+    { "key": "couponSerial",          "value": "" },
+    { "key": "offerId",               "value": "" },
+    { "key": "announcementId",        "value": "" },
+    { "key": "createdStoreId",        "value": "" }
+  ],
+  "item": [
+
+    {
+      "name": "01 — Auth",
+      "item": [
+
+        {
+          "name": "Register new user",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const suffix = Math.floor(Math.random() * 99999999).toString().padStart(8,'0');",
+                  "pm.collectionVariables.set('userPhone', '+9627' + suffix);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has sessionId', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.sessionId).to.match(/^[0-9a-f]{64}$/i);",
+                  "  pm.collectionVariables.set('sessionId', body.sessionId);",
+                  "  pm.collectionVariables.set('mallId', body.mallId ?? pm.collectionVariables.get('mallId'));",
+                  "});",
+                  "pm.test('Role is user', () => pm.expect(pm.response.json().role).to.eql('user'));",
+                  "pm.test('Points start at 0', () => pm.expect(pm.response.json().totalPoints).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"phoneNumber\": \"{{userPhone}}\",\n  \"password\": \"Test@1234\",\n  \"mallId\": \"{{mallId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"] }
+          }
+        },
+
+        {
+          "name": "Register duplicate phone → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Duplicate phone rejected (4xx)', () => pm.response.to.have.status(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"phoneNumber\": \"{{userPhone}}\",\n  \"password\": \"Test@1234\",\n  \"mallId\": \"{{mallId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"] }
+          }
+        },
+
+        {
+          "name": "Login with wrong password → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Wrong password rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"{{userPhone}}\",\n  \"password\": \"WRONG_PASSWORD\",\n  \"mallId\": \"{{mallId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"] }
+          }
+        },
+
+        {
+          "name": "Manager quick-login",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Role is manager', () => {",
+                "  const body = pm.response.json();",
+                "  pm.expect(body.role).to.eql('manager');",
+                "  pm.collectionVariables.set('managerSessionId', body.sessionId);",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"managerId\": \"{{managerId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/manager-quick-login", "host": ["{{baseUrl}}"], "path": ["api","auth","manager-quick-login"] }
+          }
+        },
+
+        {
+          "name": "Logout",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Logout succeeds (2xx)', () => pm.expect(pm.response.code).to.be.lessThan(300));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api","auth","logout"] }
+          }
+        },
+
+        {
+          "name": "Re-register user (for next tests)",
+          "event": [{
+            "listen": "prerequest",
+            "script": {
+              "exec": [
+                "const suffix = Math.floor(Math.random() * 99999999).toString().padStart(8,'0');",
+                "pm.collectionVariables.set('userPhone', '+9627' + suffix);"
+              ]
+            }
+          },{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Re-registered OK', () => pm.response.to.have.status(200));",
+                "pm.collectionVariables.set('sessionId', pm.response.json().sessionId);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User 2\",\n  \"phoneNumber\": \"{{userPhone}}\",\n  \"password\": \"Test@1234\",\n  \"mallId\": \"{{mallId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "02 — User Info",
+      "item": [
+
+        {
+          "name": "Get points (authenticated)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has totalPoints field', () => pm.expect(pm.response.json()).to.have.property('totalPoints'));",
+                "pm.test('totalPoints is a number', () => pm.expect(pm.response.json().totalPoints).to.be.a('number'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/userinfo/points", "host": ["{{baseUrl}}"], "path": ["api","userinfo","points"] }
+          }
+        },
+
+        {
+          "name": "Get points (no session) → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('No session rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/userinfo/points", "host": ["{{baseUrl}}"], "path": ["api","userinfo","points"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "03 — Transactions & Points",
+      "item": [
+
+        {
+          "name": "Submit receipt → points credited",
+          "event": [{
+            "listen": "prerequest",
+            "script": {
+              "exec": [
+                "pm.collectionVariables.set('receiptId', 'RCPT-' + Math.random().toString(36).substring(2,10).toUpperCase());"
+              ]
+            }
+          },{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                "pm.test('Has transactionId', () => {",
+                "  const body = pm.response.json();",
+                "  pm.expect(body.transactionId).to.be.a('number');",
+                "  pm.collectionVariables.set('transactionId', body.transactionId);",
+                "});",
+                "pm.test('Points issued', () => pm.expect(pm.response.json().points).to.be.above(0));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"{{userPhone}}\",\n  \"storeId\": \"{{storeId}}\",\n  \"receiptId\": \"{{receiptId}}\",\n  \"price\": 75.0\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/transactions", "host": ["{{baseUrl}}"], "path": ["api","transactions"] }
+          }
+        },
+
+        {
+          "name": "Duplicate receipt → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Duplicate receipt rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"{{userPhone}}\",\n  \"storeId\": \"{{storeId}}\",\n  \"receiptId\": \"{{receiptId}}\",\n  \"price\": 75.0\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/transactions", "host": ["{{baseUrl}}"], "path": ["api","transactions"] }
+          }
+        },
+
+        {
+          "name": "Get transaction by ID (owner)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Correct transactionId returned', () => {",
+                "  const body = pm.response.json();",
+                "  pm.expect(body.transactionId).to.eql(parseInt(pm.collectionVariables.get('transactionId')));",
+                "});",
+                "pm.test('Price is correct', () => pm.expect(pm.response.json().price).to.eql(75));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/transactions/{{transactionId}}", "host": ["{{baseUrl}}"], "path": ["api","transactions","{{transactionId}}"] }
+          }
+        },
+
+        {
+          "name": "Get my receipts",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has items array', () => pm.expect(pm.response.json().items).to.be.an('array'));",
+                "pm.test('At least 1 receipt', () => pm.expect(pm.response.json().items.length).to.be.at.least(1));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/transactions/my-receipts", "host": ["{{baseUrl}}"], "path": ["api","transactions","my-receipts"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "04 — Coupons",
+      "item": [
+
+        {
+          "name": "List coupons (authenticated)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                "const coupons = pm.response.json();",
+                "const free = coupons.find(c => c.isActive && (!c.costPoint || c.costPoint === 0));",
+                "if (free) pm.collectionVariables.set('couponId', free.id);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/coupons", "host": ["{{baseUrl}}"], "path": ["api","coupons"] }
+          }
+        },
+
+        {
+          "name": "List coupons (no session) → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('No session rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/coupons", "host": ["{{baseUrl}}"], "path": ["api","coupons"] }
+          }
+        },
+
+        {
+          "name": "Get coupon by ID",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (!pm.collectionVariables.get('couponId')) {",
+                "  console.log('No couponId set — skipping');",
+                "  return;",
+                "}",
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has id field', () => pm.expect(pm.response.json()).to.have.property('id'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/coupons/{{couponId}}", "host": ["{{baseUrl}}"], "path": ["api","coupons","{{couponId}}"] }
+          }
+        },
+
+        {
+          "name": "Redeem coupon (free)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (!pm.collectionVariables.get('couponId')) {",
+                "  console.log('No free coupon — skipping');",
+                "  return;",
+                "}",
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has serial_number (8 chars)', () => {",
+                "  const body = pm.response.json();",
+                "  pm.expect(body.serial_number).to.have.lengthOf(8);",
+                "  pm.collectionVariables.set('couponSerial', body.serial_number);",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{sessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponId\": \"{{couponId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/coupons/redeem", "host": ["{{baseUrl}}"], "path": ["api","coupons","redeem"] }
+          }
+        },
+
+        {
+          "name": "Redeem by serial (merchant)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (!pm.collectionVariables.get('couponSerial')) {",
+                "  console.log('No coupon serial — skipping');",
+                "  return;",
+                "}",
+                "pm.test('Status 200', () => pm.response.to.have.status(200));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"{{couponSerial}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/coupons/redeem-by-serial", "host": ["{{baseUrl}}"], "path": ["api","coupons","redeem-by-serial"] }
+          }
+        },
+
+        {
+          "name": "Redeem same serial again → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (!pm.collectionVariables.get('couponSerial')) return;",
+                "pm.test('Double redeem rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"{{couponSerial}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/coupons/redeem-by-serial", "host": ["{{baseUrl}}"], "path": ["api","coupons","redeem-by-serial"] }
+          }
+        },
+
+        {
+          "name": "Get user coupons wallet",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/coupons/user", "host": ["{{baseUrl}}"], "path": ["api","coupons","user"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "05 — Stores",
+      "item": [
+
+        {
+          "name": "List stores (no session) → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('No session rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/stores", "host": ["{{baseUrl}}"], "path": ["api","stores"] }
+          }
+        },
+
+        {
+          "name": "List stores (authenticated)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stores", "host": ["{{baseUrl}}"], "path": ["api","stores"] }
+          }
+        },
+
+        {
+          "name": "Get store by ID",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has id and name', () => {",
+                "  pm.expect(pm.response.json()).to.have.property('id');",
+                "  pm.expect(pm.response.json()).to.have.property('name');",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stores/{{storeId}}", "host": ["{{baseUrl}}"], "path": ["api","stores","{{storeId}}"] }
+          }
+        },
+
+        {
+          "name": "Get non-existent store → 404",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Non-existent store returns 404', () => pm.response.to.have.status(404));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stores/00000000-0000-0000-0000-000000000000", "host": ["{{baseUrl}}"], "path": ["api","stores","00000000-0000-0000-0000-000000000000"] }
+          }
+        },
+
+        {
+          "name": "Manager — Create store",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 2xx', () => pm.expect(pm.response.code).to.be.lessThan(300));",
+                "pm.test('Has id and name', () => {",
+                "  const body = pm.response.json();",
+                "  pm.expect(body).to.have.property('id');",
+                "  pm.collectionVariables.set('createdStoreId', body.id);",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"E2E Postman Store\",\n  \"description\": \"Created by Postman automated test\",\n  \"floorNumber\": \"1\",\n  \"operatingHours\": \"9:00 AM - 10:00 PM\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stores", "host": ["{{baseUrl}}"], "path": ["api","stores"] }
+          }
+        },
+
+        {
+          "name": "Manager — Update store",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Name updated', () => pm.expect(pm.response.json().name).to.eql('Updated Postman Store'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Postman Store\",\n  \"description\": \"Updated by Postman test\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stores/{{createdStoreId}}", "host": ["{{baseUrl}}"], "path": ["api","stores","{{createdStoreId}}"] }
+          }
+        },
+
+        {
+          "name": "User — Cannot create store → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Regular user forbidden (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{sessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Illegal Store\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stores", "host": ["{{baseUrl}}"], "path": ["api","stores"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "06 — Offers",
+      "item": [
+
+        {
+          "name": "Manager — Create offer",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 2xx', () => pm.expect(pm.response.code).to.be.lessThan(300));",
+                "pm.test('Has id', () => {",
+                "  pm.collectionVariables.set('offerId', pm.response.json().id);",
+                "});",
+                "pm.test('isActive true', () => pm.expect(pm.response.json().isActive).to.be.true);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": \"{{storeId}}\",\n  \"title\": \"Postman Test Offer\",\n  \"description\": \"Created by Postman test\",\n  \"startAt\": \"{{$isoTimestamp}}\",\n  \"endAt\": \"2027-12-31T00:00:00Z\",\n  \"isActive\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/offers", "host": ["{{baseUrl}}"], "path": ["api","offers"] }
+          }
+        },
+
+        {
+          "name": "List offers (user sees new offer)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                "pm.test('Created offer visible', () => {",
+                "  const id = pm.collectionVariables.get('offerId');",
+                "  const found = pm.response.json().some(o => String(o.id) === String(id));",
+                "  pm.expect(found).to.be.true;",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/offers", "host": ["{{baseUrl}}"], "path": ["api","offers"] }
+          }
+        },
+
+        {
+          "name": "Manager — Deactivate offer",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('isActive is false', () => pm.expect(pm.response.json().isActive).to.be.false);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" },
+            "url": { "raw": "{{baseUrl}}/api/offers/{{offerId}}/status", "host": ["{{baseUrl}}"], "path": ["api","offers","{{offerId}}","status"] }
+          }
+        },
+
+        {
+          "name": "Manager — Update offer",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Title updated', () => pm.expect(pm.response.json().title).to.eql('Updated Postman Offer'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": \"{{storeId}}\",\n  \"title\": \"Updated Postman Offer\",\n  \"startAt\": \"{{$isoTimestamp}}\",\n  \"endAt\": \"2027-12-31T00:00:00Z\",\n  \"isActive\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/offers/{{offerId}}", "host": ["{{baseUrl}}"], "path": ["api","offers","{{offerId}}"] }
+          }
+        },
+
+        {
+          "name": "Manager — Delete offer",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Deleted (2xx)', () => pm.expect(pm.response.code).to.be.lessThan(300));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/offers/{{offerId}}", "host": ["{{baseUrl}}"], "path": ["api","offers","{{offerId}}"] }
+          }
+        },
+
+        {
+          "name": "User — Cannot create offer → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Regular user forbidden (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{sessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": \"{{storeId}}\",\n  \"title\": \"Illegal Offer\",\n  \"startAt\": \"{{$isoTimestamp}}\",\n  \"endAt\": \"2027-12-31T00:00:00Z\",\n  \"isActive\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/offers", "host": ["{{baseUrl}}"], "path": ["api","offers"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "07 — Announcements",
+      "item": [
+
+        {
+          "name": "List announcements (no session) → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('No session rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Announcements", "host": ["{{baseUrl}}"], "path": ["api","Announcements"] }
+          }
+        },
+
+        {
+          "name": "Manager — Create announcement",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 2xx', () => pm.expect(pm.response.code).to.be.lessThan(300));",
+                "pm.test('Has id', () => {",
+                "  pm.collectionVariables.set('announcementId', pm.response.json().id);",
+                "});",
+                "pm.test('isActive true', () => pm.expect(pm.response.json().isActive).to.be.true);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman Test Announcement\",\n  \"content\": \"Created by Postman automated test\",\n  \"announcementType\": \"general\",\n  \"priority\": \"normal\",\n  \"isActive\": true,\n  \"isPinned\": false,\n  \"startDate\": \"{{$isoTimestamp}}\",\n  \"endDate\": \"2027-12-31T00:00:00Z\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/Announcements", "host": ["{{baseUrl}}"], "path": ["api","Announcements"] }
+          }
+        },
+
+        {
+          "name": "User — Can see announcement",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Announcement visible', () => {",
+                "  const id = pm.collectionVariables.get('announcementId');",
+                "  pm.expect(pm.response.json().some(a => a.id === id)).to.be.true;",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{sessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Announcements", "host": ["{{baseUrl}}"], "path": ["api","Announcements"] }
+          }
+        },
+
+        {
+          "name": "Manager — Pin announcement",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('isPinned is true', () => pm.expect(pm.response.json().isPinned).to.be.true);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"isPinned\": true\n}" },
+            "url": { "raw": "{{baseUrl}}/api/Announcements/{{announcementId}}/pin", "host": ["{{baseUrl}}"], "path": ["api","Announcements","{{announcementId}}","pin"] }
+          }
+        },
+
+        {
+          "name": "Manager — Deactivate announcement",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('isActive is false', () => pm.expect(pm.response.json().isActive).to.be.false);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{managerSessionId}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"isActive\": false\n}" },
+            "url": { "raw": "{{baseUrl}}/api/Announcements/{{announcementId}}/status", "host": ["{{baseUrl}}"], "path": ["api","Announcements","{{announcementId}}","status"] }
+          }
+        },
+
+        {
+          "name": "Manager — Delete announcement",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Deleted (2xx)', () => pm.expect(pm.response.code).to.be.lessThan(300));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Announcements/{{announcementId}}", "host": ["{{baseUrl}}"], "path": ["api","Announcements","{{announcementId}}"] }
+          }
+        },
+
+        {
+          "name": "User — Cannot create announcement → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Regular user forbidden (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Session-Id", "value": "{{sessionId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Illegal\",\n  \"content\": \"Illegal\",\n  \"announcementType\": \"general\",\n  \"priority\": \"normal\",\n  \"isActive\": true,\n  \"isPinned\": false\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/Announcements", "host": ["{{baseUrl}}"], "path": ["api","Announcements"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "08 — Dashboard (Manager only)",
+      "item": [
+
+        {
+          "name": "Dashboard — No session → 4xx",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('No session rejected (4xx)', () => pm.expect(pm.response.code).to.be.at.least(400));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Dashboard/summary", "host": ["{{baseUrl}}"], "path": ["api","Dashboard","summary"] }
+          }
+        },
+
+        {
+          "name": "Summary",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Numeric fields', () => {",
+                "  const b = pm.response.json();",
+                "  pm.expect(b.totalTransactions).to.be.a('number');",
+                "  pm.expect(b.totalSalesAmount).to.be.a('number');",
+                "  pm.expect(b.totalPointsIssued).to.be.a('number');",
+                "  pm.expect(b.activeOffersCount).to.be.a('number');",
+                "  pm.expect(b.activeAnnouncementsCount).to.be.a('number');",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dashboard/summary", "host": ["{{baseUrl}}"], "path": ["api","Dashboard","summary"] }
+          }
+        },
+
+        {
+          "name": "Sales",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has dailySales array', () => pm.expect(pm.response.json().dailySales).to.be.an('array'));",
+                "pm.test('Has topStores array', () => pm.expect(pm.response.json().topStores).to.be.an('array'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dashboard/sales", "host": ["{{baseUrl}}"], "path": ["api","Dashboard","sales"] }
+          }
+        },
+
+        {
+          "name": "Points",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has dailyIssued and dailyRedeemed', () => {",
+                "  pm.expect(pm.response.json().dailyIssued).to.be.an('array');",
+                "  pm.expect(pm.response.json().dailyRedeemed).to.be.an('array');",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dashboard/points", "host": ["{{baseUrl}}"], "path": ["api","Dashboard","points"] }
+          }
+        },
+
+        {
+          "name": "Coupons",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has isScopeLimited', () => pm.expect(pm.response.json()).to.have.property('isScopeLimited'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dashboard/coupons", "host": ["{{baseUrl}}"], "path": ["api","Dashboard","coupons"] }
+          }
+        },
+
+        {
+          "name": "Activity",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Has offers and announcements counts', () => {",
+                "  const b = pm.response.json();",
+                "  pm.expect(b.totalOffers).to.be.a('number');",
+                "  pm.expect(b.totalAnnouncements).to.be.a('number');",
+                "  pm.expect(b.recentTransactions).to.be.an('array');",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Session-Id", "value": "{{managerSessionId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dashboard/activity", "host": ["{{baseUrl}}"], "path": ["api","Dashboard","activity"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "09 — Chatbot",
+      "item": [
+
+        {
+          "name": "Ask chatbot (no session required)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status below 500', () => pm.expect(pm.response.code).to.be.lessThan(500));",
+                "pm.test('Structured response', () => {",
+                "  const b = pm.response.json();",
+                "  const hasAnswer = 'botResponse' in b;",
+                "  const hasError  = b?.error?.code === 'CHATBOT_SETTING_MISSING';",
+                "  pm.expect(hasAnswer || hasError).to.be.true;",
+                "});"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"message\": \"What are the mall operating hours?\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/Chatbot/ask", "host": ["{{baseUrl}}"], "path": ["api","Chatbot","ask"] }
+          }
+        },
+
+        {
+          "name": "Ask chatbot with 'msg' field",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status below 500', () => pm.expect(pm.response.code).to.be.lessThan(500));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"msg\": \"What stores are available?\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/Chatbot/ask", "host": ["{{baseUrl}}"], "path": ["api","Chatbot","ask"] }
+          }
+        },
+
+        {
+          "name": "Ask chatbot with 'question' field",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status below 500', () => pm.expect(pm.response.code).to.be.lessThan(500));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"question\": \"How do I earn points?\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/Chatbot/ask", "host": ["{{baseUrl}}"], "path": ["api","Chatbot","ask"] }
+          }
+        },
+
+        {
+          "name": "Chatbot history",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Chatbot/history", "host": ["{{baseUrl}}"], "path": ["api","Chatbot","history"] }
+          }
+        }
+
+      ]
+    }
+
+  ]
+}

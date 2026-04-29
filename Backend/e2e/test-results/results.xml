@@ -1,0 +1,216 @@
+<testsuites id="" name="" tests="68" failures="0" skipped="10" errors="0" time="248.585213">
+<testsuite name="01-user-registration-login.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="8" failures="0" skipped="0" time="17.672" errors="0">
+<testcase name="User Registration &amp; Login › registers a new user and receives a session ID" classname="01-user-registration-login.spec.ts" time="3.717">
+</testcase>
+<testcase name="User Registration &amp; Login › returns points = 0 for a brand-new user" classname="01-user-registration-login.spec.ts" time="1.728">
+</testcase>
+<testcase name="User Registration &amp; Login › newly registered user can access protected /api/userinfo/points" classname="01-user-registration-login.spec.ts" time="2.543">
+</testcase>
+<testcase name="User Registration &amp; Login › session is rejected after logout" classname="01-user-registration-login.spec.ts" time="2.007">
+</testcase>
+<testcase name="User Registration &amp; Login › user can log in again after logout" classname="01-user-registration-login.spec.ts" time="3.201">
+</testcase>
+<testcase name="User Registration &amp; Login › rejects registration with an already-used phone number" classname="01-user-registration-login.spec.ts" time="2.398">
+</testcase>
+<testcase name="User Registration &amp; Login › rejects login with wrong password" classname="01-user-registration-login.spec.ts" time="2.069">
+</testcase>
+<testcase name="User Registration &amp; Login › protected endpoint returns 4xx without X-Session-Id header" classname="01-user-registration-login.spec.ts" time="0.009">
+</testcase>
+</testsuite>
+<testsuite name="02-transactions-points.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="6" failures="0" skipped="0" time="27.433" errors="0">
+<testcase name="Receipt Submission &amp; Points Accrual › submitting a receipt credits points to the user" classname="02-transactions-points.spec.ts" time="4.253">
+</testcase>
+<testcase name="Receipt Submission &amp; Points Accrual › user can list their own receipts" classname="02-transactions-points.spec.ts" time="3.964">
+</testcase>
+<testcase name="Receipt Submission &amp; Points Accrual › user can read their own receipt details" classname="02-transactions-points.spec.ts" time="4.272">
+</testcase>
+<testcase name="Receipt Submission &amp; Points Accrual › rejects duplicate receipt ID" classname="02-transactions-points.spec.ts" time="3.392">
+</testcase>
+<testcase name="Receipt Submission &amp; Points Accrual › user B cannot access user A receipt details" classname="02-transactions-points.spec.ts" time="5.937">
+</testcase>
+<testcase name="Receipt Submission &amp; Points Accrual › multiple receipts accumulate points cumulatively" classname="02-transactions-points.spec.ts" time="5.615">
+</testcase>
+</testsuite>
+<testsuite name="03-coupon-redemption.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="7" failures="0" skipped="3" time="14.396" errors="0">
+<testcase name="Coupon Discovery &amp; Redemption › authenticated user can list available coupons" classname="03-coupon-redemption.spec.ts" time="2.377">
+</testcase>
+<testcase name="Coupon Discovery &amp; Redemption › listing coupons without session returns 4xx" classname="03-coupon-redemption.spec.ts" time="0.035">
+</testcase>
+<testcase name="Coupon Discovery &amp; Redemption › user coupon wallet is accessible" classname="03-coupon-redemption.spec.ts" time="2.284">
+</testcase>
+<testcase name="Coupon Discovery &amp; Redemption › can read individual coupon details when coupon exists" classname="03-coupon-redemption.spec.ts" time="2.845">
+</testcase>
+<testcase name="Coupon Discovery &amp; Redemption › user can redeem an available coupon and receives a serial number" classname="03-coupon-redemption.spec.ts">
+<properties>
+<property name="skip" value="No free coupons available — skipping redemption test">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Coupon Discovery &amp; Redemption › merchant can validate (redeem-by-serial) a user coupon serial" classname="03-coupon-redemption.spec.ts">
+<properties>
+<property name="skip" value="No free coupons available — skipping serial redemption test">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Coupon Discovery &amp; Redemption › a serial number cannot be consumed twice" classname="03-coupon-redemption.spec.ts">
+<properties>
+<property name="skip" value="No free coupons — skipping double-redeem test">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="04-manager-workflow.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="7" failures="0" skipped="0" time="43.598" errors="0">
+<testcase name="Manager Workflow — Offer Lifecycle › manager quick-login returns a manager-role session" classname="04-manager-workflow.spec.ts" time="1.663">
+</testcase>
+<testcase name="Manager Workflow — Offer Lifecycle › manager can create an offer and it appears in managed list" classname="04-manager-workflow.spec.ts" time="6.648">
+</testcase>
+<testcase name="Manager Workflow — Offer Lifecycle › offer created by manager is visible to regular users" classname="04-manager-workflow.spec.ts" time="8.099">
+</testcase>
+<testcase name="Manager Workflow — Offer Lifecycle › manager can deactivate and re-activate an offer" classname="04-manager-workflow.spec.ts" time="9.09">
+</testcase>
+<testcase name="Manager Workflow — Offer Lifecycle › manager can update offer title and description" classname="04-manager-workflow.spec.ts" time="7.455">
+</testcase>
+<testcase name="Manager Workflow — Offer Lifecycle › manager can delete an offer and it disappears from lists" classname="04-manager-workflow.spec.ts" time="8.077">
+</testcase>
+<testcase name="Manager Workflow — Offer Lifecycle › regular user is forbidden from creating an offer" classname="04-manager-workflow.spec.ts" time="2.566">
+</testcase>
+</testsuite>
+<testsuite name="05-stores-browsing.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="7" failures="0" skipped="0" time="21.535" errors="0">
+<testcase name="Store Discovery › listing stores without session returns 4xx" classname="05-stores-browsing.spec.ts" time="0.009">
+</testcase>
+<testcase name="Store Discovery › authenticated user can list stores" classname="05-stores-browsing.spec.ts" time="3.117">
+</testcase>
+<testcase name="Store Discovery › each store in the list has id, name, and mallId" classname="05-stores-browsing.spec.ts" time="3.16">
+</testcase>
+<testcase name="Store Discovery › user can get store details and data is consistent with list" classname="05-stores-browsing.spec.ts" time="4.475">
+</testcase>
+<testcase name="Store Discovery › requesting a non-existent store ID returns 404" classname="05-stores-browsing.spec.ts" time="2.849">
+</testcase>
+<testcase name="Store Discovery › returned stores all belong to the same mall context" classname="05-stores-browsing.spec.ts" time="3.117">
+</testcase>
+<testcase name="Store Discovery › calling the store list twice returns the same result" classname="05-stores-browsing.spec.ts" time="4.808">
+</testcase>
+</testsuite>
+<testsuite name="06-announcements.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="10" failures="0" skipped="0" time="59.712" errors="0">
+<testcase name="Announcement Lifecycle › listing announcements without session returns 4xx" classname="06-announcements.spec.ts" time="0.01">
+</testcase>
+<testcase name="Announcement Lifecycle › authenticated user can list announcements" classname="06-announcements.spec.ts" time="2.851">
+</testcase>
+<testcase name="Announcement Lifecycle › manager can create an announcement" classname="06-announcements.spec.ts" time="5.439">
+</testcase>
+<testcase name="Announcement Lifecycle › announcement created by manager is visible in public list" classname="06-announcements.spec.ts" time="7.843">
+</testcase>
+<testcase name="Announcement Lifecycle › manager can pin and unpin an announcement" classname="06-announcements.spec.ts" time="8.871">
+</testcase>
+<testcase name="Announcement Lifecycle › manager can deactivate and reactivate an announcement" classname="06-announcements.spec.ts" time="8.853">
+</testcase>
+<testcase name="Announcement Lifecycle › manager can update announcement title and content" classname="06-announcements.spec.ts" time="7.242">
+</testcase>
+<testcase name="Announcement Lifecycle › deleted announcement no longer appears in public list" classname="06-announcements.spec.ts" time="8.069">
+</testcase>
+<testcase name="Announcement Lifecycle › manager can list their own managed announcements" classname="06-announcements.spec.ts" time="7.257">
+</testcase>
+<testcase name="Announcement Lifecycle › regular user is forbidden from creating an announcement" classname="06-announcements.spec.ts" time="3.277">
+</testcase>
+</testsuite>
+<testsuite name="07-dashboard.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="8" failures="0" skipped="2" time="29.555" errors="0">
+<testcase name="Manager Dashboard › dashboard is inaccessible without session" classname="07-dashboard.spec.ts" time="0.024">
+</testcase>
+<testcase name="Manager Dashboard › dashboard summary returns expected numeric fields" classname="07-dashboard.spec.ts" time="5.635">
+</testcase>
+<testcase name="Manager Dashboard › dashboard summary accepts date range filter" classname="07-dashboard.spec.ts">
+<properties>
+<property name="fixme" value="Known backend bug: LINQ cannot translate date-range filter on projection record">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Manager Dashboard › dashboard sales returns aggregate and daily breakdown" classname="07-dashboard.spec.ts" time="3.301">
+</testcase>
+<testcase name="Manager Dashboard › dashboard points returns issued and redeemed data" classname="07-dashboard.spec.ts" time="3.648">
+</testcase>
+<testcase name="Manager Dashboard › dashboard coupons returns coupon metrics" classname="07-dashboard.spec.ts" time="3.447">
+</testcase>
+<testcase name="Manager Dashboard › dashboard activity returns offers, announcements and recent transactions" classname="07-dashboard.spec.ts" time="4.727">
+</testcase>
+<testcase name="Manager Dashboard › all dashboard sections respond 200 with a 7-day range" classname="07-dashboard.spec.ts">
+<properties>
+<property name="fixme" value="Known backend bug: LINQ date-range filter fails on projection records (DashboardService)">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="08-chatbot.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="8" failures="0" skipped="5" time="0.223" errors="0">
+<testcase name="Chatbot — FAQ Assistant › chatbot endpoint is reachable without a session" classname="08-chatbot.spec.ts" time="0.023">
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › chatbot returns a structured response (not a crash)" classname="08-chatbot.spec.ts" time="0.06">
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › chatbot responds with answer when configured" classname="08-chatbot.spec.ts">
+<properties>
+<property name="skip" value="Chatbot not configured (AI_API_KEY missing) — skipping on local">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › chatbot accepts &quot;msg&quot; field as alternative" classname="08-chatbot.spec.ts">
+<properties>
+<property name="skip" value="Chatbot not configured — skipping on local">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › chatbot accepts &quot;question&quot; field as alternative" classname="08-chatbot.spec.ts">
+<properties>
+<property name="skip" value="Chatbot not configured — skipping on local">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › chatbot response includes responseTimeMs" classname="08-chatbot.spec.ts">
+<properties>
+<property name="skip" value="Chatbot not configured — skipping on local">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › multiple questions in same conversation session are accepted" classname="08-chatbot.spec.ts">
+<properties>
+<property name="skip" value="Chatbot not configured — skipping on local">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Chatbot — FAQ Assistant › chatbot history endpoint returns 200" classname="08-chatbot.spec.ts" time="0.029">
+</testcase>
+</testsuite>
+<testsuite name="09-store-management.spec.ts" timestamp="2026-04-22T09:12:26.826Z" hostname="" tests="7" failures="0" skipped="0" time="28.624" errors="0">
+<testcase name="Store Management › manager can create a new store" classname="09-store-management.spec.ts" time="3.759">
+</testcase>
+<testcase name="Store Management › created store appears in the managed stores list" classname="09-store-management.spec.ts" time="5.426">
+</testcase>
+<testcase name="Store Management › created store is visible to regular users in store listing" classname="09-store-management.spec.ts" time="6.841">
+</testcase>
+<testcase name="Store Management › manager can update store name and description" classname="09-store-management.spec.ts" time="6.279">
+</testcase>
+<testcase name="Store Management › manager managed stores list is accessible" classname="09-store-management.spec.ts" time="3.696">
+</testcase>
+<testcase name="Store Management › regular user session is forbidden from creating a store" classname="09-store-management.spec.ts" time="2.613">
+</testcase>
+<testcase name="Store Management › creating a store without session returns 4xx" classname="09-store-management.spec.ts" time="0.01">
+</testcase>
+</testsuite>
+</testsuites>

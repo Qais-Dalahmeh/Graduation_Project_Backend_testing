@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="../../../Downloads/Graduation_Project_Backend-main/Graduation_Project_Backend.csproj" />
+  <Project Path="Backend/Graduation_Project_Backend.csproj" />
   <Project Path="Graduation_project_Backend_FinalTest_/Graduation_project_Backend_FinalTest_.csproj" />
 </Solution>

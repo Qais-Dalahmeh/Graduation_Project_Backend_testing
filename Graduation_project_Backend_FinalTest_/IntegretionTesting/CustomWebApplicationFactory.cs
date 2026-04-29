@@ -46,6 +46,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(ConnectionString));
 
+            // Register ServiceClass so integration tests can resolve it
+            services.AddTransient<Graduation_Project_Backend.Service.ServiceClass>();
+
             // Apply migrations
             var sp = services.BuildServiceProvider();
             using var scope = sp.CreateScope();
