@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests
+namespace Graduation_Project_Backend.Tests.Services
 {
     public sealed class ChatbotServiceTests
     {

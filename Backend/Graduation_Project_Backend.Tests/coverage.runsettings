@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Coverage run settings.
+  Excludes infrastructure layers (Controllers, DTOs, Model entities, Extensions,
+  Filters, Realtime infra, Program, Razor views) from coverage measurement.
+  These contain no testable business logic; they are covered by e2e / integration tests.
+-->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Exclude>
+            [*]Graduation_Project_Backend.Controllers.*,
+            [*]Graduation_Project_Backend.DTOs.*,
+            [*]Graduation_Project_Backend.Models.*,
+            [*]Graduation_Project_Backend.Extensions.*,
+            [*]Graduation_Project_Backend.Filters.*,
+            [*]Graduation_Project_Backend.Service.Realtime.UserPointsUpdatesService,
+            [*]Program,
+            [*]AspNetCoreGeneratedDocument.*
+          </Exclude>
+          <ExcludeByFile>
+            **/Migrations/**,
+            **/Views/**
+          </ExcludeByFile>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

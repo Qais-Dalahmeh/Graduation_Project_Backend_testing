@@ -16,10 +16,17 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <!-- Prevent the SDK from crawling into the nested test project directory -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);Graduation_Project_Backend.Tests\**</DefaultItemExcludes>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Remove="Graduation_Project_Backend.Tests\**\*.cs" />
-    <EmbeddedResource Remove="Graduation_Project_Backend.Tests\**\*" />
-    <None Remove="Graduation_Project_Backend.Tests\**\*" />
+    <Compile Remove="Graduation_Project_Backend.Tests\**" />
+    <Content Remove="Graduation_Project_Backend.Tests\**" />
+    <EmbeddedResource Remove="Graduation_Project_Backend.Tests\**" />
+    <None Remove="Graduation_Project_Backend.Tests\**" />
+    <Page Remove="Graduation_Project_Backend.Tests\**" />
   </ItemGroup>
 
 </Project>

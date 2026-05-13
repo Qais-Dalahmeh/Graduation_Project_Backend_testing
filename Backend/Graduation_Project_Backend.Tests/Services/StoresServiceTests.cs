@@ -6,7 +6,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests
+namespace Graduation_Project_Backend.Tests.Services
 {
     public sealed class StoresServiceTests
     {

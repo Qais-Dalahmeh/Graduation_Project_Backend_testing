@@ -4,7 +4,7 @@ using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
 using Graduation_Project_Backend.Tests.TestSupport;
 
-namespace Graduation_Project_Backend.Tests
+namespace Graduation_Project_Backend.Tests.Services
 {
     public sealed class DashboardServiceTests
     {

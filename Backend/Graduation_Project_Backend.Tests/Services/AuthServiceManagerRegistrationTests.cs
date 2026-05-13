@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service.Session;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.AspNetCore.Identity;
 
-namespace Graduation_Project_Backend.Tests
+namespace Graduation_Project_Backend.Tests.Services
 {
     public sealed class AuthServiceManagerRegistrationTests
     {

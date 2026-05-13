@@ -12,6 +12,9 @@ namespace Graduation_Project_Backend.Tests.TestSupport
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName ?? Guid.NewGuid().ToString("N"))
+                .EnableSensitiveDataLogging()
+                .ConfigureWarnings(w => w.Ignore(
+                    Microsoft.EntityFrameworkCore.Diagnostics.InMemoryEventId.TransactionIgnoredWarning))
                 .Options;
 
             return new AppDbContext(options);
