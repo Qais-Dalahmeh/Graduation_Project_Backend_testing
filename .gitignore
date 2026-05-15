@@ -362,9 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Claude internals
-.claude/
-Backend/.claude/
 
 # .NET SDK user-level cache / telemetry
 Backend/.dotnet/
