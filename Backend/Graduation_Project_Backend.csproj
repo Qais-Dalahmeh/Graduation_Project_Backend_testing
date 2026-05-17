@@ -18,7 +18,7 @@
 
   <PropertyGroup>
     <!-- Prevent the SDK from crawling into the nested test project directory -->
-    <DefaultItemExcludes>$(DefaultItemExcludes);Graduation_Project_Backend.Tests\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);Graduation_Project_Backend.Tests\**;Graduation_Project_Backend.NonFunctionalTests\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +27,11 @@
     <EmbeddedResource Remove="Graduation_Project_Backend.Tests\**" />
     <None Remove="Graduation_Project_Backend.Tests\**" />
     <Page Remove="Graduation_Project_Backend.Tests\**" />
+    <Compile Remove="Graduation_Project_Backend.NonFunctionalTests\**" />
+    <Content Remove="Graduation_Project_Backend.NonFunctionalTests\**" />
+    <EmbeddedResource Remove="Graduation_Project_Backend.NonFunctionalTests\**" />
+    <None Remove="Graduation_Project_Backend.NonFunctionalTests\**" />
+    <Page Remove="Graduation_Project_Backend.NonFunctionalTests\**" />
   </ItemGroup>
 
 </Project>

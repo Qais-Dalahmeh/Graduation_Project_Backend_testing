@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Backend/">
+    <Project Path="Backend/Graduation_Project_Backend.NonFunctionalTests/Graduation_Project_Backend.NonFunctionalTests.csproj" />
+  </Folder>
   <Project Path="Backend/Graduation_Project_Backend.csproj" />
   <Project Path="Graduation_project_Backend_FinalTest_/Graduation_project_Backend_FinalTest_.csproj" />
 </Solution>
