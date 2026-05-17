@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Auth;
+﻿using Graduation_Project_Backend.DTOs.Auth;
 using Graduation_Project_Backend.DTOs.Dashboard;
 using Graduation_Project_Backend.DTOs.Offers;
 using Graduation_Project_Backend.Models.Entities;
@@ -11,23 +11,23 @@ using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
-/// Fourth wave of branch-coverage tests — final push to ≥ 90% branch coverage.
+/// Fourth wave of branch-coverage tests â€” final push to â‰¥ 90% branch coverage.
 ///
 /// Covers:
-///   • AuthService.RegisterManagerAsync — manager already registered, mall mismatch, phone same-mall
-///   • AuthService.NormalizePhone       — ArgumentException → AuthValidationException catch branch
-///   • DashboardService.ValidateDateRange — invalid date range → throw
-///   • DashboardService.GetCouponsAsync  — store-manager path (coupons == null → IsScopeLimited=true)
-///   • DashboardService.GetPointsAsync   — store-manager path (coupons?.DailyRedeemed null → ?? [])
+///   â€¢ AuthService.RegisterManagerAsync â€” manager already registered, mall mismatch, phone same-mall
+///   â€¢ AuthService.NormalizePhone       â€” ArgumentException â†’ AuthValidationException catch branch
+///   â€¢ DashboardService.ValidateDateRange â€” invalid date range â†’ throw
+///   â€¢ DashboardService.GetCouponsAsync  â€” store-manager path (coupons == null â†’ IsScopeLimited=true)
+///   â€¢ DashboardService.GetPointsAsync   â€” store-manager path (coupons?.DailyRedeemed null â†’ ?? [])
 /// </summary>
 public sealed class BranchCoverageGap4
 {
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // Helpers
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static AuthService BuildAuth(out Graduation_Project_Backend.Data.AppDbContext db)
     {
@@ -70,23 +70,23 @@ public sealed class BranchCoverageGap4
             new UserAccessService(db, NullLogger<UserAccessService>.Instance));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // AuthService — RegisterManagerAsync uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // AuthService â€” RegisterManagerAsync uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task Register_ManagerAlreadyRegisteredAsUser_Throws()
     {
         // Covers RegisterManagerAsync:
         //   UserProfile? existingUserByManagerId = await _db.UserProfiles.FirstOrDefaultAsync(u => u.Id == managerId)
-        //   if (existingUserByManagerId != null) → TRUE → throw MANAGER_ALREADY_REGISTERED
+        //   if (existingUserByManagerId != null) â†’ TRUE â†’ throw MANAGER_ALREADY_REGISTERED
         var svc = BuildAuth(out var db);
         var mallId    = Guid.NewGuid();
         var managerId = Guid.NewGuid();
 
         // Manager row exists in Managers table
         db.Managers.Add(new Manager { Id = managerId, Name = "AlreadyMgr", MallID = mallId, Role = "manager" });
-        // UserProfile with same ID already exists → manager already registered
+        // UserProfile with same ID already exists â†’ manager already registered
         db.UserProfiles.Add(new UserProfile
         {
             Id = managerId, Name = "AlreadyMgr", PhoneNumber = "+962799800002",
@@ -107,7 +107,7 @@ public sealed class BranchCoverageGap4
     public async Task Register_ManagerBelongsToDifferentMall_Throws()
     {
         // Covers RegisterManagerAsync:
-        //   if (manager.MallID != request.MallID) → TRUE → throw MANAGER_MALL_MISMATCH
+        //   if (manager.MallID != request.MallID) â†’ TRUE â†’ throw MANAGER_MALL_MISMATCH
         var svc = BuildAuth(out var db);
         var mallA     = Guid.NewGuid();
         var mallB     = Guid.NewGuid();
@@ -120,7 +120,7 @@ public sealed class BranchCoverageGap4
         var req = new RegisterRequestDto
         {
             Name = "WrongMallMgr", PhoneNumber = "+962799800004",
-            Password = "Pass1234!", MallID = mallB,   // ← wrong mall
+            Password = "Pass1234!", MallID = mallB,   // â† wrong mall
             ManagerId = managerId
         };
 
@@ -131,8 +131,8 @@ public sealed class BranchCoverageGap4
     public async Task Register_ManagerPhoneAlreadyExistsInSameMall_Throws()
     {
         // Covers RegisterManagerAsync:
-        //   if (existingUserByPhone != null) → TRUE
-        //     if (existingUserByPhone.MallID == request.MallID) → TRUE → throw USER_ALREADY_EXISTS
+        //   if (existingUserByPhone != null) â†’ TRUE
+        //     if (existingUserByPhone.MallID == request.MallID) â†’ TRUE â†’ throw USER_ALREADY_EXISTS
         //   (Previous tests only covered the MallID != request.MallID path.)
         var svc = BuildAuth(out var db);
         var mallId    = Guid.NewGuid();
@@ -162,8 +162,8 @@ public sealed class BranchCoverageGap4
     public async Task Register_InvalidPhoneFormat_ThrowsAuthValidation()
     {
         // Covers AuthService.NormalizePhone:
-        //   catch (ArgumentException ex) → throw new AuthValidationException(ex.Message, "INVALID_PHONE_NUMBER")
-        //   PhoneNumberService.Normalize("not-a-phone") throws ArgumentException → gets wrapped.
+        //   catch (ArgumentException ex) â†’ throw new AuthValidationException(ex.Message, "INVALID_PHONE_NUMBER")
+        //   PhoneNumberService.Normalize("not-a-phone") throws ArgumentException â†’ gets wrapped.
         var svc = BuildAuth(out _);
 
         var req = new RegisterRequestDto
@@ -175,36 +175,36 @@ public sealed class BranchCoverageGap4
         await Assert.ThrowsAsync<AuthValidationException>(() => svc.RegisterAsync(req));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // DashboardService — ValidateDateRange throw branch
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // DashboardService â€” ValidateDateRange throw branch
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetSummary_InvalidDateRange_Throws()
     {
         // Covers DashboardService.ValidateDateRange (sync helper in main class):
-        //   if (query.From.HasValue && query.To.HasValue && query.From > query.To) → TRUE → throw
+        //   if (query.From.HasValue && query.To.HasValue && query.From > query.To) â†’ TRUE â†’ throw
         var svc = BuildDashboard(out _, out var userId, out _, isMallWide: true);
 
         var query = new DashboardDateRangeQuery
         {
             From = DateTimeOffset.UtcNow.AddDays(5),
-            To   = DateTimeOffset.UtcNow.AddDays(1)   // To < From → invalid
+            To   = DateTimeOffset.UtcNow.AddDays(1)   // To < From â†’ invalid
         };
 
         await Assert.ThrowsAsync<ApiValidationException>(() => svc.GetSummaryAsync(userId, query));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // DashboardService — store-manager path (coupons is null)
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // DashboardService â€” store-manager path (coupons is null)
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetCoupons_AsStoreManager_ReturnsScopeLimited()
     {
         // Covers GetCouponsAsync:
         //   GetCouponSnapshotAsync returns null for store managers (!access.IsMallWideManager)
-        //   if (coupons == null) → TRUE → return new DashboardCouponsResponse { IsScopeLimited = true }
+        //   if (coupons == null) â†’ TRUE â†’ return new DashboardCouponsResponse { IsScopeLimited = true }
         var svc = BuildDashboard(out _, out var userId, out _, isMallWide: false);
 
         var result = await svc.GetCouponsAsync(userId, new DashboardDateRangeQuery());
@@ -217,8 +217,8 @@ public sealed class BranchCoverageGap4
     {
         // Covers GetPointsAsync:
         //   coupons?.DailyRedeemed.GroupBy(...)...ToList() ?? []
-        //   coupons is null for store managers → coupons?.DailyRedeemed = null
-        //   → null chain → ?? [] → dailyRedeemed = [] (empty list)
+        //   coupons is null for store managers â†’ coupons?.DailyRedeemed = null
+        //   â†’ null chain â†’ ?? [] â†’ dailyRedeemed = [] (empty list)
         var svc = BuildDashboard(out _, out var userId, out _, isMallWide: false);
 
         var result = await svc.GetPointsAsync(userId, new DashboardDateRangeQuery());
@@ -227,23 +227,23 @@ public sealed class BranchCoverageGap4
         Assert.Null(result.TotalPointsRedeemed);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // DashboardService — ValidateDateRange: From set, To null (B=false short-circuit)
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // DashboardService â€” ValidateDateRange: From set, To null (B=false short-circuit)
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetSales_OnlyFromDate_DoesNotThrow()
     {
         // Covers DashboardService.ValidateDateRange line 322:
         //   if (query.From.HasValue && query.To.HasValue && query.From > query.To)
-        //   → From.HasValue=true, To.HasValue=false  → short-circuit at B → no throw
+        //   â†’ From.HasValue=true, To.HasValue=false  â†’ short-circuit at B â†’ no throw
         //   This covers the 8th branch (B=false short-circuit) that was previously uncovered.
         var svc = BuildDashboard(out _, out var userId, out _, isMallWide: true);
 
         var query = new DashboardDateRangeQuery
         {
             From = DateTimeOffset.UtcNow.AddDays(-7),
-            To   = null   // only From is set → To.HasValue=false → B short-circuits
+            To   = null   // only From is set â†’ To.HasValue=false â†’ B short-circuits
         };
 
         // Should not throw
@@ -251,17 +251,17 @@ public sealed class BranchCoverageGap4
         Assert.NotNull(result);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // OffersService — NormalizeRequired null branch (line 201)
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // OffersService â€” NormalizeRequired null branch (line 201)
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task CreateOffer_NullTitle_Throws()
     {
         // Covers OffersService.NormalizeRequired (line 201):
         //   string normalized = NormalizeOptional(value) ?? string.Empty
-        //   When Title is null → NormalizeOptional(null) = null → null ?? string.Empty = ""
-        //   → IsNullOrWhiteSpace("") = true → throw (covers the TRUE branch of ??)
+        //   When Title is null â†’ NormalizeOptional(null) = null â†’ null ?? string.Empty = ""
+        //   â†’ IsNullOrWhiteSpace("") = true â†’ throw (covers the TRUE branch of ??)
         var db      = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -283,7 +283,7 @@ public sealed class BranchCoverageGap4
 
         var req = new CreateOfferRequest
         {
-            StoreId = storeId, Title = null!,   // null title → NormalizeRequired TRUE branch
+            StoreId = storeId, Title = null!,   // null title â†’ NormalizeRequired TRUE branch
             StartAt = DateTimeOffset.UtcNow,
             EndAt   = DateTimeOffset.UtcNow.AddDays(5)
         };
@@ -291,9 +291,9 @@ public sealed class BranchCoverageGap4
         await Assert.ThrowsAsync<ApiValidationException>(() => svc.CreateOfferAsync(userId, req));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // RewardsService — RedeemCouponAsync user-not-found branch (line 269)
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // RewardsService â€” RedeemCouponAsync user-not-found branch (line 269)
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task RedeemCoupon_UserNotFound_Throws()
@@ -301,7 +301,7 @@ public sealed class BranchCoverageGap4
         // Covers RedeemCouponAsync line 269:
         //   UserProfile user = await GetUserByIdAsync(userId)
         //       ?? throw new InvalidOperationException("User not found");
-        //   → user == null → throw (TRUE branch of ??) — previously uncovered.
+        //   â†’ user == null â†’ throw (TRUE branch of ??) â€” previously uncovered.
         var db       = TestInfrastructure.CreateDbContext();
         var svc      = new RewardsService(db, new PhoneNumberService(), new NoOpUserPointsUpdatesService(), new UserAccessService(db, NullLogger<UserAccessService>.Instance));
         var couponId = Guid.NewGuid();
@@ -311,7 +311,7 @@ public sealed class BranchCoverageGap4
             Id = couponId, Type = "Test", IsActive = true,
             StartAt   = DateTimeOffset.UtcNow.AddDays(-1),
             EndAt     = DateTimeOffset.UtcNow.AddDays(10),
-            CostPoint = null,   // free — skips DeductPoints
+            CostPoint = null,   // free â€” skips DeductPoints
             CreatedAt = DateTimeOffset.UtcNow
         });
         await db.SaveChangesAsync();
@@ -322,3 +322,4 @@ public sealed class BranchCoverageGap4
             () => svc.RedeemCouponAsync(nonExistentUserId, couponId));
     }
 }
+

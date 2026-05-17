@@ -1,11 +1,11 @@
-using Graduation_Project_Backend.Models.Entities;
+﻿using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
 using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.QualityTests
+namespace Graduation_Project_Backend.Tests.FunctionalTests
 {
     public sealed class RewardsServiceCouponTests
     {
@@ -241,3 +241,4 @@ namespace Graduation_Project_Backend.Tests.QualityTests
         }
     }
 }
+

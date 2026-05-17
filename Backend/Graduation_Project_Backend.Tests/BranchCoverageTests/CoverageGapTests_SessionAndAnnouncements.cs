@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Announcements;
+﻿using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service.Session;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Coverage-gap tests for SessionService.GetSessionByIdAsync and
@@ -15,7 +15,7 @@ namespace Graduation_Project_Backend.Tests.CoverageGapTests;
 /// </summary>
 public sealed class CoverageGapTests_SessionAndAnnouncements
 {
-    // ── SessionService ───────────────────────────────────────────────────────
+    // â”€â”€ SessionService â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetSessionByIdAsync_ReturnsNull_ForNullInput()
@@ -85,7 +85,7 @@ public sealed class CoverageGapTests_SessionAndAnnouncements
         Assert.NotNull(result);
     }
 
-    // ── AnnouncementsService helpers ─────────────────────────────────────────
+    // â”€â”€ AnnouncementsService helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static AnnouncementsService CreateAnnouncementsService(AppDbContext db)
     {
@@ -126,7 +126,7 @@ public sealed class CoverageGapTests_SessionAndAnnouncements
         return (managerId, mallId, storeId);
     }
 
-    // ── SetAnnouncementStatusAsync ───────────────────────────────────────────
+    // â”€â”€ SetAnnouncementStatusAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task SetAnnouncementStatusAsync_DeactivatesActiveAnnouncement()
@@ -191,7 +191,7 @@ public sealed class CoverageGapTests_SessionAndAnnouncements
         Assert.True(result.IsActive);
     }
 
-    // ── GetManagedAnnouncementsAsync ─────────────────────────────────────────
+    // â”€â”€ GetManagedAnnouncementsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetManagedAnnouncementsAsync_MallWideManager_ReturnsAllMallAnnouncements()
@@ -221,9 +221,9 @@ public sealed class CoverageGapTests_SessionAndAnnouncements
 
         db.Stores.Add(new Store { Id = otherStoreId, Name = "Store Z", MallID = mallId });
         db.Announcements.AddRange(
-            // Assigned store announcement — should appear
+            // Assigned store announcement â€” should appear
             new Announcement { Id = Guid.NewGuid(), MallID = mallId, StoreId = storeId, ManagerId = managerId, Title = "Mine", Content = "...", AnnouncementType = "general", Priority = "normal", IsActive = true, StartDate = now.AddDays(-1), EndDate = now.AddDays(5), CreatedAt = now, UpdatedAt = now },
-            // Other store announcement — should NOT appear
+            // Other store announcement â€” should NOT appear
             new Announcement { Id = Guid.NewGuid(), MallID = mallId, StoreId = otherStoreId, ManagerId = managerId, Title = "Not Mine", Content = "...", AnnouncementType = "general", Priority = "normal", IsActive = true, StartDate = now.AddDays(-1), EndDate = now.AddDays(5), CreatedAt = now, UpdatedAt = now });
         await db.SaveChangesAsync();
 
@@ -250,3 +250,4 @@ public sealed class CoverageGapTests_SessionAndAnnouncements
             service.GetManagedAnnouncementsAsync(userId));
     }
 }
+

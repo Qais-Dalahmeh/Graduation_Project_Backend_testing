@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Announcements;
+﻿using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.DTOs.Auth;
 using Graduation_Project_Backend.DTOs.Offers;
 using Graduation_Project_Backend.DTOs.Receipts;
@@ -13,18 +13,18 @@ using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Additional branch-coverage tests targeting remaining uncovered branches in
 /// AnnouncementsService, StoresService, RewardsService, OffersService, and AuthService.
-/// Goal: push branch coverage from 82.5% → 90%+.
+/// Goal: push branch coverage from 82.5% â†’ 90%+.
 /// </summary>
 public sealed class BranchCoverageGap2
 {
-    // ══════════════════════════════════════════════════════════════════
-    // AnnouncementsService — remaining uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // AnnouncementsService â€” remaining uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static AnnouncementsService BuildAnnouncementsService(
         out Graduation_Project_Backend.Data.AppDbContext db,
@@ -57,8 +57,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateAnnouncement_WithExplicitTypeAndPriority_UsesProvidedValues()
     {
-        // Covers: NormalizeOptional(AnnouncementType) ?? "general" — left side non-null (uses value)
-        //     and NormalizeOptional(Priority) ?? "normal"          — left side non-null (uses value)
+        // Covers: NormalizeOptional(AnnouncementType) ?? "general" â€” left side non-null (uses value)
+        //     and NormalizeOptional(Priority) ?? "normal"          â€” left side non-null (uses value)
         var svc = BuildAnnouncementsService(out _, out var userId, out _);
         var req = new CreateAnnouncementRequest
         {
@@ -78,8 +78,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateAnnouncement_NullTitle_Throws()
     {
-        // Covers: NormalizeRequired → NormalizeOptional(null) returns null
-        //         → null ?? string.Empty = "" → IsNullOrWhiteSpace("") = true → throw
+        // Covers: NormalizeRequired â†’ NormalizeOptional(null) returns null
+        //         â†’ null ?? string.Empty = "" â†’ IsNullOrWhiteSpace("") = true â†’ throw
         var svc = BuildAnnouncementsService(out _, out var userId, out _);
         var req = new CreateAnnouncementRequest
         {
@@ -94,7 +94,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateAnnouncement_WhitespaceTitle_Throws()
     {
-        // Covers: NormalizeRequired → IsNullOrWhiteSpace("   ") = true → throw (different entry)
+        // Covers: NormalizeRequired â†’ IsNullOrWhiteSpace("   ") = true â†’ throw (different entry)
         var svc = BuildAnnouncementsService(out _, out var userId, out _);
         var req = new CreateAnnouncementRequest
         {
@@ -109,8 +109,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateAnnouncement_StoreManagerForOwnAssignedStore_Succeeds()
     {
-        // Covers: !access.IsMallWideManager && !access.AssignedStoreIds.Contains(store.Id) → FALSE
-        //         (store manager IS assigned → no exception thrown)
+        // Covers: !access.IsMallWideManager && !access.AssignedStoreIds.Contains(store.Id) â†’ FALSE
+        //         (store manager IS assigned â†’ no exception thrown)
         var db = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -140,7 +140,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task DeleteAnnouncement_NotFound_Throws()
     {
-        // Covers: GetManagedAnnouncementEntityAsync → SingleOrDefault returns null → throw ApiNotFoundException
+        // Covers: GetManagedAnnouncementEntityAsync â†’ SingleOrDefault returns null â†’ throw ApiNotFoundException
         var svc = BuildAnnouncementsService(out _, out var userId, out _);
         await Assert.ThrowsAsync<ApiNotFoundException>(() =>
             svc.DeleteAnnouncementAsync(userId, Guid.NewGuid()));
@@ -167,7 +167,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetVisibleAnnouncements_MixedPriority_OrdersHighFirst()
     {
-        // Covers: announcement.Priority == "high" → true AND false (both ordering branches)
+        // Covers: announcement.Priority == "high" â†’ true AND false (both ordering branches)
         var db = TestInfrastructure.CreateDbContext();
         var mallId = Guid.NewGuid();
         var userId = Guid.NewGuid();
@@ -188,7 +188,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateAnnouncement_WithStore_ReturnsStoreName()
     {
-        // Covers: store != null ? store.Name : null → non-null branch in BuildAnnouncementProjectionQuery
+        // Covers: store != null ? store.Name : null â†’ non-null branch in BuildAnnouncementProjectionQuery
         var db      = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -213,14 +213,14 @@ public sealed class BranchCoverageGap2
         Assert.Equal("CoolStore", result.StoreName);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // StoresService — remaining uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // StoresService â€” remaining uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetVisibleStoreById_Found_ReturnsStoreResponse()
     {
-        // Covers: GetStoreResponseAsync → store != null → return mapped StoreResponse (non-null branch)
+        // Covers: GetStoreResponseAsync â†’ store != null â†’ return mapped StoreResponse (non-null branch)
         var db      = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -240,8 +240,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateStore_NullCategoryIds_Succeeds()
     {
-        // Covers: ValidateCategoryIdsAsync → categoryIds.Count == 0 → early return (no DB query)
-        //     and SyncStoreCategoriesAsync  → categoryIds.Count == 0 → early return
+        // Covers: ValidateCategoryIdsAsync â†’ categoryIds.Count == 0 â†’ early return (no DB query)
+        //     and SyncStoreCategoriesAsync  â†’ categoryIds.Count == 0 â†’ early return
         var db     = TestInfrastructure.CreateDbContext();
         var mallId = Guid.NewGuid();
         var userId = Guid.NewGuid();
@@ -260,8 +260,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task UpdateStore_NoExistingCategories_AddsNewCategories()
     {
-        // Covers: SyncStoreCategoriesAsync replaceExisting=true → existingCategories.Count == 0
-        //         → skip RemoveRange, proceed to add new categories
+        // Covers: SyncStoreCategoriesAsync replaceExisting=true â†’ existingCategories.Count == 0
+        //         â†’ skip RemoveRange, proceed to add new categories
         var db     = TestInfrastructure.CreateDbContext();
         var mallId = Guid.NewGuid();
         var userId = Guid.NewGuid();
@@ -285,7 +285,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task CreateStore_EmptyName_Throws()
     {
-        // Covers: NormalizeRequired in StoresService → IsNullOrWhiteSpace("") = true → throw ApiValidationException
+        // Covers: NormalizeRequired in StoresService â†’ IsNullOrWhiteSpace("") = true â†’ throw ApiValidationException
         var db     = TestInfrastructure.CreateDbContext();
         var mallId = Guid.NewGuid();
         var userId = Guid.NewGuid();
@@ -320,9 +320,9 @@ public sealed class BranchCoverageGap2
         Assert.Equal("BigStore", result[0].Name);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // RewardsService — remaining uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // RewardsService â€” remaining uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static RewardsService BuildRewards(out Graduation_Project_Backend.Data.AppDbContext db)
     {
@@ -336,7 +336,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task ProcessTransaction_EmptyStoreId_Throws()
     {
-        // Covers: if (storeId == Guid.Empty) → true → throw InvalidOperationException
+        // Covers: if (storeId == Guid.Empty) â†’ true â†’ throw InvalidOperationException
         var svc = BuildRewards(out _);
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => svc.ProcessTransactionAsync("+962799000010", Guid.Empty, "RX01", null, 10));
@@ -345,7 +345,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task ProcessTransaction_EmptyReceiptId_Throws()
     {
-        // Covers: if (string.IsNullOrWhiteSpace(receiptId)) → true → throw
+        // Covers: if (string.IsNullOrWhiteSpace(receiptId)) â†’ true â†’ throw
         var svc = BuildRewards(out _);
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => svc.ProcessTransactionAsync("+962799000011", Guid.NewGuid(), "", null, 10));
@@ -354,7 +354,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task ProcessTransaction_EmptyPhoneNumber_Throws()
     {
-        // Covers: if (string.IsNullOrWhiteSpace(phoneNumber)) → true → throw
+        // Covers: if (string.IsNullOrWhiteSpace(phoneNumber)) â†’ true â†’ throw
         var svc = BuildRewards(out _);
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => svc.ProcessTransactionAsync("", Guid.NewGuid(), "RX02", null, 10));
@@ -363,7 +363,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task ProcessTransaction_ReceiptAlreadyExists_Throws()
     {
-        // Covers: if (await ReceiptExistsAsync(receiptId)) → true → throw
+        // Covers: if (await ReceiptExistsAsync(receiptId)) â†’ true â†’ throw
         var svc     = BuildRewards(out var db);
         var mallId  = Guid.NewGuid();
         var storeId = Guid.NewGuid();
@@ -404,7 +404,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetTransactionDetails_ValidTransaction_ReturnsData()
     {
-        // Covers: transaction != null → return new { ... } branch (non-null path)
+        // Covers: transaction != null â†’ return new { ... } branch (non-null path)
         var svc     = BuildRewards(out var db);
         var userId  = Guid.NewGuid();
         var storeId = Guid.NewGuid();
@@ -423,7 +423,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetUserTotalPoints_ValidUser_ReturnsPoints()
     {
-        // Covers: user?.TotalPoints → non-null (user found) branch
+        // Covers: user?.TotalPoints â†’ non-null (user found) branch
         var svc    = BuildRewards(out var db);
         var userId = Guid.NewGuid();
 
@@ -438,7 +438,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetUserTotalPoints_NotFound_ReturnsNull()
     {
-        // Covers: user == null → null?.TotalPoints = null branch
+        // Covers: user == null â†’ null?.TotalPoints = null branch
         var svc    = BuildRewards(out _);
         var result = await svc.GetUserTotalPointsAsync(Guid.NewGuid());
 
@@ -448,7 +448,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetCouponDetails_ValidCoupon_ReturnsData()
     {
-        // Covers: coupon != null → return new { ... } branch
+        // Covers: coupon != null â†’ return new { ... } branch
         var svc      = BuildRewards(out var db);
         var couponId = Guid.NewGuid();
 
@@ -463,7 +463,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetCouponDetails_NotFound_ReturnsNull()
     {
-        // Covers: coupon == null → return null branch
+        // Covers: coupon == null â†’ return null branch
         var svc    = BuildRewards(out _);
         var result = await svc.GetCouponDetailsAsync(Guid.NewGuid());
 
@@ -473,7 +473,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task RedeemCoupon_CouponNotFound_Throws()
     {
-        // Covers: GetCouponAsync → null → throw "Coupon not found"
+        // Covers: GetCouponAsync â†’ null â†’ throw "Coupon not found"
         var svc    = BuildRewards(out var db);
         var userId = Guid.NewGuid();
 
@@ -486,7 +486,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task RedeemCouponBySerial_InactiveCoupon_Throws()
     {
-        // Covers: userCoupon.Coupon.IsActive == false → throw "Coupon is not active" (in serial path)
+        // Covers: userCoupon.Coupon.IsActive == false â†’ throw "Coupon is not active" (in serial path)
         var svc      = BuildRewards(out var db);
         var couponId = Guid.NewGuid();
 
@@ -500,7 +500,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task RedeemCouponBySerial_ExpiredCoupon_Throws()
     {
-        // Covers: coupon.EndAt < now → throw "Coupon outside redeem period" (in serial path)
+        // Covers: coupon.EndAt < now â†’ throw "Coupon outside redeem period" (in serial path)
         var svc      = BuildRewards(out var db);
         var couponId = Guid.NewGuid();
 
@@ -514,7 +514,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetUserCoupons_WithCoupons_ReturnsViewData()
     {
-        // Covers: GetUserCouponsViewAsync — uc.Coupon is non-null (Type, Discription, etc.)
+        // Covers: GetUserCouponsViewAsync â€” uc.Coupon is non-null (Type, Discription, etc.)
         var svc      = BuildRewards(out var db);
         var userId   = Guid.NewGuid();
         var couponId = Guid.NewGuid();
@@ -532,7 +532,7 @@ public sealed class BranchCoverageGap2
     public async Task GetMyReceipts_WithNoFilters_ReturnsAll()
     {
         // Covers: all the HasValue == false branches in GetMyReceiptsAsync
-        //         (StoreId, Status, From, To are all null → skip those filters)
+        //         (StoreId, Status, From, To are all null â†’ skip those filters)
         var svc     = BuildRewards(out var db);
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -551,7 +551,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task DeductPoints_NotEnoughPoints_Throws()
     {
-        // Covers: RedeemCouponAsync → coupon.CostPoint.HasValue = true → DeductPoints → not enough → throw
+        // Covers: RedeemCouponAsync â†’ coupon.CostPoint.HasValue = true â†’ DeductPoints â†’ not enough â†’ throw
         var svc      = BuildRewards(out var db);
         var userId   = Guid.NewGuid();
         var couponId = Guid.NewGuid();
@@ -563,14 +563,14 @@ public sealed class BranchCoverageGap2
         await Assert.ThrowsAsync<InvalidOperationException>(() => svc.RedeemCouponAsync(userId, couponId));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // OffersService — remaining uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // OffersService â€” remaining uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task CreateOffer_NullDescription_ReturnsNullDescription()
     {
-        // Covers: NormalizeOptional(request.Description) → null branch (IsNullOrWhiteSpace(null)=true)
+        // Covers: NormalizeOptional(request.Description) â†’ null branch (IsNullOrWhiteSpace(null)=true)
         var db      = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -598,7 +598,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task GetVisibleOffers_WithActiveOffer_ReturnsOffer()
     {
-        // Covers: offer.MallID ?? store.MallID — left side non-null → uses offer.MallID
+        // Covers: offer.MallID ?? store.MallID â€” left side non-null â†’ uses offer.MallID
         var db      = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
         var userId  = Guid.NewGuid();
@@ -620,7 +620,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task SetOfferStatus_NotFound_Throws()
     {
-        // Covers: GetManagedOfferEntityAsync → null → throw ApiNotFoundException
+        // Covers: GetManagedOfferEntityAsync â†’ null â†’ throw ApiNotFoundException
         var db     = TestInfrastructure.CreateDbContext();
         var mallId = Guid.NewGuid();
         var userId = Guid.NewGuid();
@@ -649,9 +649,9 @@ public sealed class BranchCoverageGap2
         await Assert.ThrowsAsync<ApiNotFoundException>(() => svc.DeleteOfferAsync(userId, 9999L));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // AuthService — remaining uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // AuthService â€” remaining uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static AuthService BuildAuthService(
         out Graduation_Project_Backend.Data.AppDbContext db,
@@ -677,7 +677,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task Login_SuccessRehashNeeded_UpdatesHashAndSucceeds()
     {
-        // Covers: verificationResult == SuccessRehashNeeded → true → user.PasswordHash = newHash
+        // Covers: verificationResult == SuccessRehashNeeded â†’ true â†’ user.PasswordHash = newHash
         var hasher = new AlwaysRehashNeededHasher();
         var svc    = BuildAuthService(out var db, hasher);
         var mallId = Guid.NewGuid();
@@ -706,9 +706,9 @@ public sealed class BranchCoverageGap2
     public async Task ManagerQuickLogin_ExistingUserEmptyPhoneAndRole_FillsDefaults()
     {
         // Covers (else branch when user already exists):
-        //   string.IsNullOrWhiteSpace(manager.Role) → true → assign "manager"
-        //   string.IsNullOrWhiteSpace(user.PhoneNumber) → true → assign placeholder
-        //   string.IsNullOrWhiteSpace(user.PasswordHash) → true → hash new password
+        //   string.IsNullOrWhiteSpace(manager.Role) â†’ true â†’ assign "manager"
+        //   string.IsNullOrWhiteSpace(user.PhoneNumber) â†’ true â†’ assign placeholder
+        //   string.IsNullOrWhiteSpace(user.PasswordHash) â†’ true â†’ hash new password
         var svc       = BuildAuthService(out var db);
         var managerId = Guid.NewGuid();
         var mallId    = Guid.NewGuid();
@@ -718,8 +718,8 @@ public sealed class BranchCoverageGap2
         {
             Id           = managerId,
             Name         = "OldName",
-            PhoneNumber  = "",          // empty → will be filled
-            PasswordHash = "",          // empty → will be hashed
+            PhoneNumber  = "",          // empty â†’ will be filled
+            PasswordHash = "",          // empty â†’ will be hashed
             Role         = "manager",
             MallID       = mallId
         });
@@ -728,16 +728,16 @@ public sealed class BranchCoverageGap2
         var response = await svc.ManagerQuickLoginAsync(new ManagerQuickLoginRequestDto { ManagerId = managerId });
 
         Assert.NotNull(response.SessionId);
-        Assert.Equal("manager", response.Role); // empty role → default "manager"
+        Assert.Equal("manager", response.Role); // empty role â†’ default "manager"
     }
 
     [Fact]
     public async Task ManagerQuickLogin_ExistingUserWithNonEmptyRole_UsesManagerRole()
     {
         // Covers (else branch when user already exists):
-        //   string.IsNullOrWhiteSpace(manager.Role) → false → use manager.Role.Trim()
-        //   string.IsNullOrWhiteSpace(user.PhoneNumber) → false → skip
-        //   string.IsNullOrWhiteSpace(user.PasswordHash) → false → skip
+        //   string.IsNullOrWhiteSpace(manager.Role) â†’ false â†’ use manager.Role.Trim()
+        //   string.IsNullOrWhiteSpace(user.PhoneNumber) â†’ false â†’ skip
+        //   string.IsNullOrWhiteSpace(user.PasswordHash) â†’ false â†’ skip
         var svc       = BuildAuthService(out var db);
         var managerId = Guid.NewGuid();
         var mallId    = Guid.NewGuid();
@@ -762,8 +762,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task Register_ManagerPhoneAlreadyInDifferentMall_Throws()
     {
-        // Covers: RegisterManagerAsync → existingUserByPhone != null && MallID != request.MallID
-        //         → throw AuthConflictException("PHONE_ALREADY_REGISTERED")
+        // Covers: RegisterManagerAsync â†’ existingUserByPhone != null && MallID != request.MallID
+        //         â†’ throw AuthConflictException("PHONE_ALREADY_REGISTERED")
         var svc       = BuildAuthService(out var db);
         var managerId = Guid.NewGuid();
         var mallId    = Guid.NewGuid();
@@ -797,8 +797,8 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task Register_ExistingUserDifferentMall_Throws()
     {
-        // Covers: RegisterAsync → existingUser != null && existingUser.MallID != request.MallID
-        //         → throw AuthConflictException("PHONE_ALREADY_REGISTERED")
+        // Covers: RegisterAsync â†’ existingUser != null && existingUser.MallID != request.MallID
+        //         â†’ throw AuthConflictException("PHONE_ALREADY_REGISTERED")
         var svc    = BuildAuthService(out var db);
         var mallId = Guid.NewGuid();
         var otherMall = Guid.NewGuid();
@@ -824,7 +824,7 @@ public sealed class BranchCoverageGap2
     [Fact]
     public async Task Register_ValidateRequest_ManagerIdWithEmptyGuid_Throws()
     {
-        // Covers: ValidateRegisterRequest → dto.ManagerId.HasValue && dto.ManagerId.Value == Guid.Empty → throw
+        // Covers: ValidateRegisterRequest â†’ dto.ManagerId.HasValue && dto.ManagerId.Value == Guid.Empty â†’ throw
         var svc = BuildAuthService(out _);
         var dto = new RegisterRequestDto
         {
@@ -837,3 +837,4 @@ public sealed class BranchCoverageGap2
         await Assert.ThrowsAsync<AuthValidationException>(() => svc.RegisterAsync(dto));
     }
 }
+

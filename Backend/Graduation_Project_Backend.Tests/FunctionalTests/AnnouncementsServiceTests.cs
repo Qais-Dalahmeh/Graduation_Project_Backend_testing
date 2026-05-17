@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Announcements;
+﻿using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
@@ -6,7 +6,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.QualityTests
+namespace Graduation_Project_Backend.Tests.FunctionalTests
 {
     public sealed class AnnouncementsServiceTests
     {
@@ -154,7 +154,7 @@ namespace Graduation_Project_Backend.Tests.QualityTests
             db.Management.Add(new Management { ManagerId = managerId, StoreId = storeId, CreatedAt = now });
             await db.SaveChangesAsync();
 
-            // Store-scoped manager must supply a StoreId — null means mall-wide which is forbidden
+            // Store-scoped manager must supply a StoreId â€” null means mall-wide which is forbidden
             await Assert.ThrowsAsync<ApiForbiddenException>(() =>
                 CreateService(db).CreateAnnouncementAsync(managerId, new CreateAnnouncementRequest
                 {
@@ -226,3 +226,4 @@ namespace Graduation_Project_Backend.Tests.QualityTests
         }
     }
 }
+

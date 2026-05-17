@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Receipts;
+﻿using Graduation_Project_Backend.DTOs.Receipts;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service.Realtime;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.Services
+namespace Graduation_Project_Backend.Tests.ServiceTests
 {
     public sealed class RewardsServiceReceiptTests
     {
@@ -82,3 +82,4 @@ namespace Graduation_Project_Backend.Tests.Services
         }
     }
 }
+

@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Graduation_Project_Backend.DTOs.Chatbot;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
@@ -8,7 +8,7 @@ using Graduation_Project_Backend.Service.Session;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Non-functional branch-coverage tests.
@@ -18,9 +18,9 @@ namespace Graduation_Project_Backend.Tests.CoverageGapTests;
 /// </summary>
 public sealed class BranchCoverageTests
 {
-    // ══════════════════════════════════════════════════════════════════
-    // PhoneNumberService — all validation branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // PhoneNumberService â€” all validation branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static readonly PhoneNumberService _phone = new();
 
@@ -139,9 +139,9 @@ public sealed class BranchCoverageTests
         Assert.Throws<ArgumentException>(() => _phone.Normalize("(---)"));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // JsonDocumentMapper — all null / kind branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // JsonDocumentMapper â€” all null / kind branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public void ToJsonDocument_NullElement_ReturnsNull()
@@ -191,9 +191,9 @@ public sealed class BranchCoverageTests
         Assert.Equal(42, result!.Value.GetProperty("x").GetInt32());
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // UserAccessContext.CanAccessStore — 4 boolean combinations
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // UserAccessContext.CanAccessStore â€” 4 boolean combinations
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static readonly Guid _storeA = Guid.NewGuid();
     private static readonly Guid _storeB = Guid.NewGuid();
@@ -258,9 +258,9 @@ public sealed class BranchCoverageTests
         Assert.False(ctx.CanAccessStore(_storeA));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // SessionService — all branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // SessionService â€” all branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetSessionById_NullSessionId_ReturnsNull()
@@ -383,9 +383,9 @@ public sealed class BranchCoverageTests
         Assert.NotNull(await svc.GetSessionByIdAsync(second.Id));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // UserAccessService — manager/non-manager, mall mismatch branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // UserAccessService â€” manager/non-manager, mall mismatch branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetUserAccessContext_NonManagerUser_IsManagerFalse()
@@ -503,9 +503,9 @@ public sealed class BranchCoverageTests
             () => svc.GetUserAccessContextAsync(Guid.NewGuid()));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // AskChatbotRequest.GetMessage() — all field name aliases
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // AskChatbotRequest.GetMessage() â€” all field name aliases
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public void AskChatbotRequest_GetMessage_ViaMsg()
@@ -593,3 +593,4 @@ public sealed class BranchCoverageTests
         Assert.Equal(id, req.ConversationSessionId);
     }
 }
+

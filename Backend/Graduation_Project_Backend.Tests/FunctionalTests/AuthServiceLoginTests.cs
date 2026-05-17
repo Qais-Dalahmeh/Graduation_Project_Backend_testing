@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Auth;
+﻿using Graduation_Project_Backend.DTOs.Auth;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service.Auth;
@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service.Session;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.AspNetCore.Identity;
 
-namespace Graduation_Project_Backend.Tests.QualityTests
+namespace Graduation_Project_Backend.Tests.FunctionalTests
 {
     public sealed class AuthServiceLoginTests
     {
@@ -267,9 +267,10 @@ namespace Graduation_Project_Backend.Tests.QualityTests
             var login1 = await auth.LoginAsync(new LoginRequestDto { PhoneNumber = "0791234009", Password = "Pass123", MallID = mallId });
             var login2 = await auth.LoginAsync(new LoginRequestDto { PhoneNumber = "0791234009", Password = "Pass123", MallID = mallId });
 
-            // Session is replaced — only one active session at a time
+            // Session is replaced â€” only one active session at a time
             Assert.Single(db.UserSessions);
             Assert.NotEqual(login1.SessionId, login2.SessionId);
         }
     }
 }
+

@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Stores;
+﻿using Graduation_Project_Backend.DTOs.Stores;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
@@ -6,7 +6,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Coverage-gap tests for StoresService methods not yet reached.
@@ -57,7 +57,7 @@ public sealed class CoverageGapTests_StoresService
         return (db, userId, mallId, storeId);
     }
 
-    // ── GetStoresAsync ───────────────────────────────────────────────────────
+    // â”€â”€ GetStoresAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetStoresAsync_ReturnsAllStores_OrderedByName()
@@ -88,7 +88,7 @@ public sealed class CoverageGapTests_StoresService
         Assert.Empty(result);
     }
 
-    // ── GetStoreByIdAsync ────────────────────────────────────────────────────
+    // â”€â”€ GetStoreByIdAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetStoreByIdAsync_ReturnsNull_WhenNotFound()
@@ -115,7 +115,7 @@ public sealed class CoverageGapTests_StoresService
         Assert.Equal("Nike", result.Name);
     }
 
-    // ── GetVisibleStoresAsync ────────────────────────────────────────────────
+    // â”€â”€ GetVisibleStoresAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetVisibleStoresAsync_ReturnsStoresForUserMall()
@@ -123,7 +123,7 @@ public sealed class CoverageGapTests_StoresService
         var (db, userId, mallId, storeId) = SetupRegularUser();
         using (db)
         {
-            // Add a store in a different mall — should not appear
+            // Add a store in a different mall â€” should not appear
             Guid otherMallId = Guid.NewGuid();
             db.Malls.Add(new Mall { Id = otherMallId, Name = "Other Mall", CreatedAt = DateTimeOffset.UtcNow });
             db.Stores.Add(new Store { Id = Guid.NewGuid(), Name = "Gucci", MallID = otherMallId });
@@ -137,7 +137,7 @@ public sealed class CoverageGapTests_StoresService
         }
     }
 
-    // ── GetVisibleStoreByIdAsync ─────────────────────────────────────────────
+    // â”€â”€ GetVisibleStoreByIdAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetVisibleStoreByIdAsync_ReturnsNull_WhenStoreNotInUserMall()
@@ -165,7 +165,7 @@ public sealed class CoverageGapTests_StoresService
         }
     }
 
-    // ── GetManagedStoresAsync ────────────────────────────────────────────────
+    // â”€â”€ GetManagedStoresAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetManagedStoresAsync_ReturnsMallStores_WithCategories()
@@ -194,7 +194,7 @@ public sealed class CoverageGapTests_StoresService
         }
     }
 
-    // ── UpdateStoreAsync ─────────────────────────────────────────────────────
+    // â”€â”€ UpdateStoreAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task UpdateStoreAsync_UpdatesNameAndPersists()
@@ -253,3 +253,4 @@ public sealed class CoverageGapTests_StoresService
         }
     }
 }
+

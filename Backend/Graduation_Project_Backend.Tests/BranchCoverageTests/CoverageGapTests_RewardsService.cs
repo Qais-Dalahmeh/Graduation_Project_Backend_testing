@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Receipts;
+﻿using Graduation_Project_Backend.DTOs.Receipts;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
@@ -6,7 +6,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Coverage-gap tests for RewardsService methods not yet reached by other test suites.
@@ -21,7 +21,7 @@ public sealed class CoverageGapTests_RewardsService
         return new RewardsService(db, new PhoneNumberService(), new NoOpUserPointsUpdatesService(), access);
     }
 
-    // ── GetTransactionDetailsAsync ───────────────────────────────────────────
+    // â”€â”€ GetTransactionDetailsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetTransactionDetailsAsync_ReturnsNull_WhenTransactionNotFound()
@@ -51,7 +51,7 @@ public sealed class CoverageGapTests_RewardsService
         Assert.NotNull(result);
     }
 
-    // ── GetCouponsAsync ──────────────────────────────────────────────────────
+    // â”€â”€ GetCouponsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetCouponsAsync_ReturnsAll_WhenNoFilter()
@@ -98,7 +98,7 @@ public sealed class CoverageGapTests_RewardsService
         Assert.Empty(result);
     }
 
-    // ── GetCouponDetailsAsync ────────────────────────────────────────────────
+    // â”€â”€ GetCouponDetailsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetCouponDetailsAsync_ReturnsNull_WhenNotFound()
@@ -125,7 +125,7 @@ public sealed class CoverageGapTests_RewardsService
         Assert.NotNull(result);
     }
 
-    // ── GetUserCouponsViewAsync ──────────────────────────────────────────────
+    // â”€â”€ GetUserCouponsViewAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetUserCouponsViewAsync_ReturnsEmpty_WhenNoUserCoupons()
@@ -155,7 +155,7 @@ public sealed class CoverageGapTests_RewardsService
         Assert.Single(result);
     }
 
-    // ── GetUserTotalPointsAsync ──────────────────────────────────────────────
+    // â”€â”€ GetUserTotalPointsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetUserTotalPointsAsync_ReturnsNull_WhenUserNotFound()
@@ -182,7 +182,7 @@ public sealed class CoverageGapTests_RewardsService
         Assert.Equal(750, result);
     }
 
-    // ── GetMyReceiptsAsync ───────────────────────────────────────────────────
+    // â”€â”€ GetMyReceiptsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetMyReceiptsAsync_ReturnsPagedReceipts_WithStoreFilter()
@@ -255,3 +255,4 @@ public sealed class CoverageGapTests_RewardsService
             service.GetMyReceiptsAsync(userId, query));
     }
 }
+

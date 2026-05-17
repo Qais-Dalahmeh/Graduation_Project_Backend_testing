@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Graduation_Project_Backend.DTOs.Auth;
 using Graduation_Project_Backend.DTOs.Dashboard;
 using Graduation_Project_Backend.DTOs.Offers;
@@ -12,7 +12,7 @@ using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Covers remaining error-path branches to push line coverage toward 100%.
@@ -23,7 +23,7 @@ namespace Graduation_Project_Backend.Tests.CoverageGapTests;
 /// </summary>
 public sealed class CoverageGapTests_ErrorPaths
 {
-    // ── AuthException base class ─────────────────────────────────────────────
+    // â”€â”€ AuthException base class â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public void AuthValidationException_CodeIsSet()
@@ -54,7 +54,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.Equal("NOT_FOUND", ex.Code);
     }
 
-    // ── AuthService — null/empty dto validation ──────────────────────────────
+    // â”€â”€ AuthService â€” null/empty dto validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static AuthService CreateAuthService(AppDbContext db)
         => new AuthService(db, new PhoneNumberService(), new PasswordHasher<UserProfile>(), new SessionService(db));
@@ -178,7 +178,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.NotNull(result.SessionId);
     }
 
-    // ── SessionService.DeleteSessionAsync — empty id ─────────────────────────
+    // â”€â”€ SessionService.DeleteSessionAsync â€” empty id â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task DeleteSessionAsync_EmptyId_ReturnsFalse()
@@ -198,7 +198,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.False(result);
     }
 
-    // ── RewardsService.ProcessTransactionAsync — error paths ─────────────────
+    // â”€â”€ RewardsService.ProcessTransactionAsync â€” error paths â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static RewardsService CreateRewardsService(AppDbContext db)
     {
@@ -253,7 +253,7 @@ public sealed class CoverageGapTests_ErrorPaths
             CreateRewardsService(db).ProcessTransactionAsync("+962700900033", storeId, "R4", null, 10));
     }
 
-    // ── OffersService — store validation paths ───────────────────────────────
+    // â”€â”€ OffersService â€” store validation paths â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static OffersService CreateOffersService(AppDbContext db)
     {
@@ -311,7 +311,7 @@ public sealed class CoverageGapTests_ErrorPaths
             svc.CreateOfferAsync(managerId, request));
     }
 
-    // ── DashboardService — date range in GetTransactionMetricsAsync ──────────
+    // â”€â”€ DashboardService â€” date range in GetTransactionMetricsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetSummaryAsync_WithDateFilter_FiltersTransactions()
@@ -336,7 +336,7 @@ public sealed class CoverageGapTests_ErrorPaths
         var access = new UserAccessService(db, NullLogger<UserAccessService>.Instance);
         var svc = new DashboardService(db, access);
 
-        // Filter to only include the last 5 days — should see only 1 transaction
+        // Filter to only include the last 5 days â€” should see only 1 transaction
         var query = new DashboardDateRangeQuery { From = now.AddDays(-5), To = now.AddDays(1) };
         var result = await svc.GetSummaryAsync(managerId, query);
 
@@ -344,7 +344,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.Equal(20m, result.TotalSalesAmount);
     }
 
-    // ── DashboardService — GetCouponSnapshotAsync date filter ────────────────
+    // â”€â”€ DashboardService â€” GetCouponSnapshotAsync date filter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetPointsAsync_WithDateFilter_AppliesFilter()
@@ -377,7 +377,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.Empty(result.DailyRedeemed);
     }
 
-    // ── StoresService.SyncStoreCategoriesAsync — replaceExisting with no prior ─
+    // â”€â”€ StoresService.SyncStoreCategoriesAsync â€” replaceExisting with no prior â”€
 
     [Fact]
     public async Task UpdateStoreAsync_ReplaceExisting_WithNoExistingCategories()
@@ -410,7 +410,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.Single(result.Categories);
     }
 
-    // ── UserAccessContext — all properties are set ───────────────────────────
+    // â”€â”€ UserAccessContext â€” all properties are set â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public void UserAccessContext_Properties_AreAccessible()
@@ -434,7 +434,7 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.Equal("manager", ctx.UserRole);
     }
 
-    // ── JsonDocumentMapper — undefined element ───────────────────────────────
+    // â”€â”€ JsonDocumentMapper â€” undefined element â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public void ToJsonDocument_ReturnsNull_ForUndefinedElement()
@@ -445,3 +445,4 @@ public sealed class CoverageGapTests_ErrorPaths
         Assert.Null(result);
     }
 }
+

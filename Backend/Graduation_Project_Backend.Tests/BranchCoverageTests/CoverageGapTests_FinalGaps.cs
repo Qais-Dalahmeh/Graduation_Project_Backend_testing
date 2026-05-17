@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.DTOs.Auth;
 using Graduation_Project_Backend.DTOs.Offers;
@@ -13,7 +13,7 @@ using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Final coverage-gap tests targeting the remaining uncovered lines across:
@@ -24,7 +24,7 @@ namespace Graduation_Project_Backend.Tests.CoverageGapTests;
 /// </summary>
 public sealed class CoverageGapTests_FinalGaps
 {
-    // ── Exception classes (just need one instantiation each) ─────────────────
+    // â”€â”€ Exception classes (just need one instantiation each) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public void ApiUnauthorizedException_CanBeInstantiated()
@@ -50,7 +50,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.Equal(502, ex.StatusCode);
     }
 
-    // ── JsonDocumentMapper ───────────────────────────────────────────────────
+    // â”€â”€ JsonDocumentMapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public void ToJsonDocument_ReturnsNull_ForNullInput()
@@ -90,7 +90,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.NotNull(result);
     }
 
-    // ── PhoneNumberService ───────────────────────────────────────────────────
+    // â”€â”€ PhoneNumberService â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public void PhoneNumberService_Normalizes_07Format()
@@ -171,7 +171,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.Throws<ArgumentException>(() => svc.Normalize("1234567890"));  // no +, not 07, not 962
     }
 
-    // ── OffersService.GetOffersAsync & GetManagedOffersAsync ─────────────────
+    // â”€â”€ OffersService.GetOffersAsync & GetManagedOffersAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static OffersService CreateOffersService(AppDbContext db)
     {
@@ -252,7 +252,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.Equal("Mine", result[0].Title);
     }
 
-    // ── OffersService.UpdateOfferAsync ───────────────────────────────────────
+    // â”€â”€ OffersService.UpdateOfferAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task UpdateOfferAsync_UpdatesTitleAndDates()
@@ -285,7 +285,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.Equal("New Title", result.Title);
     }
 
-    // ── RewardsService.GetReceiptDetailsForUserAsync — manager path ──────────
+    // â”€â”€ RewardsService.GetReceiptDetailsForUserAsync â€” manager path â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetReceiptDetailsForUserAsync_MallWideManager_CanViewAnyReceipt()
@@ -382,7 +382,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.Null(result);
     }
 
-    // ── RewardsService.RedeemCouponBySerialAsync — inactive/expired via serial ─
+    // â”€â”€ RewardsService.RedeemCouponBySerialAsync â€” inactive/expired via serial â”€
 
     [Fact]
     public async Task RedeemCouponBySerialAsync_InactiveCoupon_Throws()
@@ -430,7 +430,7 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.Contains("outside redeem period", ex.Message);
     }
 
-    // ── AnnouncementsService.ValidateAnnouncementRequestAsync — store branches ─
+    // â”€â”€ AnnouncementsService.ValidateAnnouncementRequestAsync â€” store branches â”€
 
     [Fact]
     public async Task CreateAnnouncementAsync_StoreInDifferentMall_ThrowsForbidden()
@@ -529,7 +529,7 @@ public sealed class CoverageGapTests_FinalGaps
             svc.CreateAnnouncementAsync(managerId, request));
     }
 
-    // ── StoresService.ValidateCategoryIdsAsync — invalid IDs branch ──────────
+    // â”€â”€ StoresService.ValidateCategoryIdsAsync â€” invalid IDs branch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task CreateStoreAsync_InvalidCategoryIds_ThrowsValidation()
@@ -557,7 +557,7 @@ public sealed class CoverageGapTests_FinalGaps
             svc.CreateStoreAsync(managerId, request));
     }
 
-    // ── UserAccessService — manager.MallID != user.MallID (log warning path) ─
+    // â”€â”€ UserAccessService â€” manager.MallID != user.MallID (log warning path) â”€
 
     [Fact]
     public async Task GetUserAccessContextAsync_LogsWarning_WhenManagerMallDiffersFromUserMall()
@@ -577,12 +577,12 @@ public sealed class CoverageGapTests_FinalGaps
         var svc = new UserAccessService(db, NullLogger<UserAccessService>.Instance);
         var context = await svc.GetUserAccessContextAsync(managerId);
 
-        // MallID comes from manager when mismatch — this exercises the LogWarning branch
+        // MallID comes from manager when mismatch â€” this exercises the LogWarning branch
         Assert.Equal(mallB, context.MallID);
         Assert.True(context.IsManager);
     }
 
-    // ── AuthService — RegisterManagerAsync branches ──────────────────────────
+    // â”€â”€ AuthService â€” RegisterManagerAsync branches â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static AuthService CreateAuthService(AppDbContext db)
     {
@@ -696,7 +696,7 @@ public sealed class CoverageGapTests_FinalGaps
         await Assert.ThrowsAsync<AuthConflictException>(() => svc.RegisterAsync(dto));
     }
 
-    // ── AuthService.ManagerQuickLoginAsync — existing user update path ───────
+    // â”€â”€ AuthService.ManagerQuickLoginAsync â€” existing user update path â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task ManagerQuickLoginAsync_ExistingUserProfile_UpdatesAndReturnsSession()
@@ -718,3 +718,4 @@ public sealed class CoverageGapTests_FinalGaps
         Assert.NotNull(result.SessionId);
     }
 }
+

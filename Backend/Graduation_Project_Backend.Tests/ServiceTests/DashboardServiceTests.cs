@@ -1,10 +1,10 @@
-using Graduation_Project_Backend.DTOs.Dashboard;
+﻿using Graduation_Project_Backend.DTOs.Dashboard;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
 using Graduation_Project_Backend.Tests.TestSupport;
 
-namespace Graduation_Project_Backend.Tests.Services
+namespace Graduation_Project_Backend.Tests.ServiceTests
 {
     public sealed class DashboardServiceTests
     {
@@ -41,3 +41,4 @@ namespace Graduation_Project_Backend.Tests.Services
         }
     }
 }
+

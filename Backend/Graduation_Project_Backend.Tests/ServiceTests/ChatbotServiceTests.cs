@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.Services
+namespace Graduation_Project_Backend.Tests.ServiceTests
 {
     public sealed class ChatbotServiceTests
     {
@@ -129,3 +129,4 @@ namespace Graduation_Project_Backend.Tests.Services
         }
     }
 }
+

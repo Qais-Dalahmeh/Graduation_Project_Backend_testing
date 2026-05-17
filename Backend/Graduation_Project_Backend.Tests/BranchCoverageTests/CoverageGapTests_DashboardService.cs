@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Dashboard;
+﻿using Graduation_Project_Backend.DTOs.Dashboard;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
 using Graduation_Project_Backend.Service;
@@ -6,7 +6,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Coverage-gap tests for DashboardService methods not yet reached.
@@ -14,7 +14,7 @@ namespace Graduation_Project_Backend.Tests.CoverageGapTests;
 /// </summary>
 public sealed class CoverageGapTests_DashboardService
 {
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /// <summary>Creates a mall-wide manager (no Management rows = mall-wide scope).</summary>
     private static (AppDbContext db, Guid managerId, Guid mallId, Guid storeId) SetupMallWideManager()
@@ -59,7 +59,7 @@ public sealed class CoverageGapTests_DashboardService
         return new DashboardService(db, access);
     }
 
-    // ── GetSalesAsync ────────────────────────────────────────────────────────
+    // â”€â”€ GetSalesAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetSalesAsync_MallWideManager_ReturnsAggregatedSales()
@@ -116,7 +116,7 @@ public sealed class CoverageGapTests_DashboardService
         }
     }
 
-    // ── GetPointsAsync ───────────────────────────────────────────────────────
+    // â”€â”€ GetPointsAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetPointsAsync_MallWideManager_ReturnsPointsSummary()
@@ -157,7 +157,7 @@ public sealed class CoverageGapTests_DashboardService
         }
     }
 
-    // ── GetCouponsAsync (DashboardService) ───────────────────────────────────
+    // â”€â”€ GetCouponsAsync (DashboardService) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task DashboardGetCouponsAsync_MallWideManager_ReturnsCouponStats()
@@ -214,7 +214,7 @@ public sealed class CoverageGapTests_DashboardService
         }
     }
 
-    // ── GetActivityAsync ─────────────────────────────────────────────────────
+    // â”€â”€ GetActivityAsync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Fact]
     public async Task GetActivityAsync_MallWideManager_ReturnsFullActivity()
@@ -268,3 +268,4 @@ public sealed class CoverageGapTests_DashboardService
         }
     }
 }
+

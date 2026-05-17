@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Announcements;
+﻿using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.DTOs.Offers;
 using Graduation_Project_Backend.Models.Entities;
 using Graduation_Project_Backend.Models.User;
@@ -7,7 +7,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.Services
+namespace Graduation_Project_Backend.Tests.ServiceTests
 {
     public sealed class ContentManagementTests
     {
@@ -90,3 +90,4 @@ namespace Graduation_Project_Backend.Tests.Services
         }
     }
 }
+

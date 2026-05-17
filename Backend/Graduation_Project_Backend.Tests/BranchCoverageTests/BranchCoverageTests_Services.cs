@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Announcements;
+﻿using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.DTOs.Offers;
 using Graduation_Project_Backend.DTOs.Receipts;
 using Graduation_Project_Backend.DTOs.Stores;
@@ -9,7 +9,7 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Targets uncovered branches in AnnouncementsService, OffersService,
@@ -17,9 +17,9 @@ namespace Graduation_Project_Backend.Tests.CoverageGapTests;
 /// </summary>
 public sealed class BranchCoverageTests_Services
 {
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // Helpers
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static (AnnouncementsService svc, UserProfile user, Guid userId, Guid mallId) BuildAnnouncementsSetup(bool isManager, bool isMallWide = true)
     {
@@ -78,9 +78,9 @@ public sealed class BranchCoverageTests_Services
         return (svc, userId, mallId, storeId);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // AnnouncementsService — branch coverage
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // AnnouncementsService â€” branch coverage
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task CreateAnnouncement_InvalidDateRange_Throws()
@@ -208,9 +208,9 @@ public sealed class BranchCoverageTests_Services
         Assert.Equal("A1", result[0].Title);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // OffersService — branch coverage
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // OffersService â€” branch coverage
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task CreateOffer_InvalidDateRange_Throws()
@@ -289,9 +289,9 @@ public sealed class BranchCoverageTests_Services
         Assert.Equal("O1", result[0].Title);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // RewardsService — branch coverage
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // RewardsService â€” branch coverage
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static RewardsService BuildRewardsService(out Graduation_Project_Backend.Data.AppDbContext db)
     {
@@ -535,9 +535,9 @@ public sealed class BranchCoverageTests_Services
             () => svc.ProcessTransactionAsync("+962791110022", Guid.NewGuid(), "R99", null, -1));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // StoresService — branch coverage
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // StoresService â€” branch coverage
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static StoresService BuildStoresService(out Graduation_Project_Backend.Data.AppDbContext db)
     {
@@ -570,7 +570,7 @@ public sealed class BranchCoverageTests_Services
         db.UserProfiles.Add(new UserProfile { Id = userId, Name = "SM", PhoneNumber = "+962791110024", PasswordHash = "x", Role = "manager", MallID = mallId });
         db.Managers.Add(new Manager { Id = userId, Name = "SM", MallID = mallId, Role = "store_manager" });
         db.Stores.Add(new Store { Id = storeId, Name = "S", MallID = mallId });
-        db.Management.Add(new Management { ManagerId = userId, StoreId = storeId }); // assigned → not mall-wide
+        db.Management.Add(new Management { ManagerId = userId, StoreId = storeId }); // assigned â†’ not mall-wide
         await db.SaveChangesAsync();
 
         var svc = new StoresService(db, new UserAccessService(db, NullLogger<UserAccessService>.Instance), NullLogger<StoresService>.Instance);
@@ -643,8 +643,9 @@ public sealed class BranchCoverageTests_Services
         await db.SaveChangesAsync();
 
         var svc = new StoresService(db, new UserAccessService(db, NullLogger<UserAccessService>.Instance), NullLogger<StoresService>.Instance);
-        // GetVisibleStoresAsync with no stores → hits storeIds.Count == 0 branch
+        // GetVisibleStoresAsync with no stores â†’ hits storeIds.Count == 0 branch
         var result = await svc.GetVisibleStoresAsync(userId);
         Assert.Empty(result);
     }
 }
+

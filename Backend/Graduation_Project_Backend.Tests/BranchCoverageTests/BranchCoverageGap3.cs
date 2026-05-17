@@ -1,4 +1,4 @@
-using Graduation_Project_Backend.DTOs.Announcements;
+﻿using Graduation_Project_Backend.DTOs.Announcements;
 using Graduation_Project_Backend.DTOs.Dashboard;
 using Graduation_Project_Backend.DTOs.Offers;
 using Graduation_Project_Backend.Models.Entities;
@@ -8,25 +8,25 @@ using Graduation_Project_Backend.Service.Common;
 using Graduation_Project_Backend.Tests.TestSupport;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Graduation_Project_Backend.Tests.CoverageGapTests;
+namespace Graduation_Project_Backend.Tests.BranchCoverageTests;
 
 /// <summary>
 /// Third wave of branch-coverage tests.
 /// Targets the remaining uncovered branches to push past 90% branch coverage.
 ///
 /// Specifically covers:
-///   • AnnouncementsService.UpdateAnnouncementAsync — both ?? branches for AnnouncementType and Priority
-///   • DashboardService.GetActivityAsync — store-manager (non-mall-wide) path skips unreadNotifications
-///   • RewardsService — ProcessTransaction store-not-found, user-not-found, null-description
-///   • RewardsService — RedeemCoupon not-started-yet, RedeemCouponBySerial serial-not-found
-///   • RewardsService — GetUserCoupons with orphaned (null) Coupon navigation covers all ?. null branches
-///   • OffersService — store manager creating offer for their own assigned store (success, no throw)
+///   â€¢ AnnouncementsService.UpdateAnnouncementAsync â€” both ?? branches for AnnouncementType and Priority
+///   â€¢ DashboardService.GetActivityAsync â€” store-manager (non-mall-wide) path skips unreadNotifications
+///   â€¢ RewardsService â€” ProcessTransaction store-not-found, user-not-found, null-description
+///   â€¢ RewardsService â€” RedeemCoupon not-started-yet, RedeemCouponBySerial serial-not-found
+///   â€¢ RewardsService â€” GetUserCoupons with orphaned (null) Coupon navigation covers all ?. null branches
+///   â€¢ OffersService â€” store manager creating offer for their own assigned store (success, no throw)
 /// </summary>
 public sealed class BranchCoverageGap3
 {
-    // ══════════════════════════════════════════════════════════════════
-    // AnnouncementsService — UpdateAnnouncementAsync uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // AnnouncementsService â€” UpdateAnnouncementAsync uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static (AnnouncementsService svc, Guid userId, Guid mallId, Guid storeId)
         BuildAnnouncementsForUpdate()
@@ -57,8 +57,8 @@ public sealed class BranchCoverageGap3
     public async Task UpdateAnnouncement_ExplicitTypeAndPriority_UpdatesCorrectly()
     {
         // Covers UpdateAnnouncementAsync lines 104-105:
-        //   NormalizeOptional("promotion") = "promotion" (non-null) → "promotion" ?? "general" = "promotion" (FALSE branch of ??)
-        //   NormalizeOptional("high")      = "high"      (non-null) → "high"      ?? "normal"  = "high"      (FALSE branch of ??)
+        //   NormalizeOptional("promotion") = "promotion" (non-null) â†’ "promotion" ?? "general" = "promotion" (FALSE branch of ??)
+        //   NormalizeOptional("high")      = "high"      (non-null) â†’ "high"      ?? "normal"  = "high"      (FALSE branch of ??)
         var (svc, userId, _, _) = BuildAnnouncementsForUpdate();
 
         var createReq = new CreateAnnouncementRequest
@@ -88,8 +88,8 @@ public sealed class BranchCoverageGap3
     public async Task UpdateAnnouncement_EmptyTypeAndPriority_FallsBackToDefaults()
     {
         // Covers UpdateAnnouncementAsync lines 104-105:
-        //   NormalizeOptional("") = null → null ?? "general" = "general" (TRUE branch of ??)
-        //   NormalizeOptional("") = null → null ?? "normal"  = "normal"  (TRUE branch of ??)
+        //   NormalizeOptional("") = null â†’ null ?? "general" = "general" (TRUE branch of ??)
+        //   NormalizeOptional("") = null â†’ null ?? "normal"  = "normal"  (TRUE branch of ??)
         var (svc, userId, _, _) = BuildAnnouncementsForUpdate();
 
         var createReq = new CreateAnnouncementRequest
@@ -104,8 +104,8 @@ public sealed class BranchCoverageGap3
         {
             Title            = "Changed",
             Content          = "Changed content",
-            AnnouncementType = "",       // NormalizeOptional("") → null → use default "general"
-            Priority         = "   ",   // NormalizeOptional("   ") → null → use default "normal"
+            AnnouncementType = "",       // NormalizeOptional("") â†’ null â†’ use default "general"
+            Priority         = "   ",   // NormalizeOptional("   ") â†’ null â†’ use default "normal"
             StartDate        = DateTimeOffset.UtcNow,
             EndDate          = DateTimeOffset.UtcNow.AddDays(5)
         };
@@ -115,15 +115,15 @@ public sealed class BranchCoverageGap3
         Assert.Equal("normal",  result.Priority);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // DashboardService — GetActivityAsync store-manager path
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // DashboardService â€” GetActivityAsync store-manager path
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task GetActivity_AsStoreManager_UnreadNotificationsIsNull()
     {
         // Covers DashboardService line 157:
-        //   if (access.IsMallWideManager) — FALSE branch
+        //   if (access.IsMallWideManager) â€” FALSE branch
         //   Store managers skip the unreadNotifications query; result.UnreadNotifications == null.
         var db     = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
@@ -149,9 +149,9 @@ public sealed class BranchCoverageGap3
         Assert.Null(result.UnreadNotifications);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // RewardsService — uncovered ProcessTransaction branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // RewardsService â€” uncovered ProcessTransaction branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     private static RewardsService BuildRewards3(out Graduation_Project_Backend.Data.AppDbContext db)
     {
@@ -168,7 +168,7 @@ public sealed class BranchCoverageGap3
     {
         // Covers ProcessTransactionAsync:
         //   Guid? mallId = await GetMallIdByStoreIdAsync(storeId);
-        //   if (mallId == null) → TRUE branch — store doesn't exist in DB.
+        //   if (mallId == null) â†’ TRUE branch â€” store doesn't exist in DB.
         var svc = BuildRewards3(out _);
         var nonExistentStoreId = Guid.NewGuid();
 
@@ -180,7 +180,7 @@ public sealed class BranchCoverageGap3
     public async Task ProcessTransaction_UserPhoneNotRegistered_Throws()
     {
         // Covers ProcessTransactionAsync:
-        //   UserProfile user = await GetUserByPhoneAndMallIdAsync(…) ?? throw  → null-coalescing throw branch.
+        //   UserProfile user = await GetUserByPhoneAndMallIdAsync(â€¦) ?? throw  â†’ null-coalescing throw branch.
         //   The store exists so mallId is valid, but no user has this phone number.
         var svc = BuildRewards3(out var db);
         var mallId  = Guid.NewGuid();
@@ -196,7 +196,7 @@ public sealed class BranchCoverageGap3
     public async Task ProcessTransaction_NullDescription_StillSucceeds()
     {
         // Covers CreateTransactionAsync:
-        //   ReceiptDescription = description ?? ""  — TRUE branch (description is null → uses "").
+        //   ReceiptDescription = description ?? ""  â€” TRUE branch (description is null â†’ uses "").
         var svc = BuildRewards3(out var db);
         var mallId  = Guid.NewGuid();
         var storeId = Guid.NewGuid();
@@ -216,16 +216,16 @@ public sealed class BranchCoverageGap3
         Assert.Equal(storeId, result.StoreId);
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // RewardsService — RedeemCoupon "not started yet" branch
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // RewardsService â€” RedeemCoupon "not started yet" branch
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task RedeemCoupon_NotStartedYet_Throws()
     {
         // Covers RedeemCouponAsync:
         //   if (coupon.StartAt > now || coupon.EndAt < now)
-        //   → StartAt > now evaluates TRUE (short-circuits) → throw.
+        //   â†’ StartAt > now evaluates TRUE (short-circuits) â†’ throw.
         //   Previous tests only covered the EndAt < now path.
         var svc = BuildRewards3(out var db);
         var userId   = Guid.NewGuid();
@@ -239,7 +239,7 @@ public sealed class BranchCoverageGap3
         db.Coupons.Add(new Coupon
         {
             Id = couponId, Type = "Future", IsActive = true,
-            StartAt  = DateTimeOffset.UtcNow.AddDays(5),   // starts in the future → StartAt > now = true
+            StartAt  = DateTimeOffset.UtcNow.AddDays(5),   // starts in the future â†’ StartAt > now = true
             EndAt    = DateTimeOffset.UtcNow.AddDays(10),
             CostPoint = 50, CreatedAt = DateTimeOffset.UtcNow
         });
@@ -248,15 +248,15 @@ public sealed class BranchCoverageGap3
         await Assert.ThrowsAsync<InvalidOperationException>(() => svc.RedeemCouponAsync(userId, couponId));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // RewardsService — RedeemCouponBySerial uncovered branches
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // RewardsService â€” RedeemCouponBySerial uncovered branches
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task RedeemCouponBySerial_SerialNotFound_Throws()
     {
         // Covers RedeemCouponBySerialAsync:
-        //   if (userCoupon == null) → TRUE branch (serial doesn't exist in DB).
+        //   if (userCoupon == null) â†’ TRUE branch (serial doesn't exist in DB).
         var svc = BuildRewards3(out _);
 
         await Assert.ThrowsAsync<InvalidOperationException>(
@@ -267,8 +267,8 @@ public sealed class BranchCoverageGap3
     public async Task RedeemCouponBySerial_NotStartedYet_Throws()
     {
         // Covers RedeemCouponBySerialAsync:
-        //   if (!userCoupon.Coupon.IsActive)         → FALSE (active)
-        //   if (StartAt > now || EndAt < now)        → StartAt > now = TRUE (short-circuit)
+        //   if (!userCoupon.Coupon.IsActive)         â†’ FALSE (active)
+        //   if (StartAt > now || EndAt < now)        â†’ StartAt > now = TRUE (short-circuit)
         var svc = BuildRewards3(out var db);
         var couponId = Guid.NewGuid();
 
@@ -294,8 +294,8 @@ public sealed class BranchCoverageGap3
     public async Task GetReceiptDetails_MallManagerDifferentMall_Throws()
     {
         // Covers GetReceiptDetailsForUserAsync:
-        //   access.IsMallWideManager = true  → evaluates: receipt.StoreMallId == access.MallID
-        //   The mall-wide manager is from a DIFFERENT mall → == false → canAccess stays false → throw.
+        //   access.IsMallWideManager = true  â†’ evaluates: receipt.StoreMallId == access.MallID
+        //   The mall-wide manager is from a DIFFERENT mall â†’ == false â†’ canAccess stays false â†’ throw.
         //   Previous test only covered the true (same mall, success) path.
         var db       = TestInfrastructure.CreateDbContext();
         var mallA    = Guid.NewGuid();   // manager's mall
@@ -325,8 +325,8 @@ public sealed class BranchCoverageGap3
     public async Task GetReceiptDetails_StoreManagerUnassignedStore_Throws()
     {
         // Covers GetReceiptDetailsForUserAsync:
-        //   access.IsMallWideManager = false → evaluates: access.AssignedStoreIds.Contains(receipt.StoreId)
-        //   The store manager is NOT assigned to the receipt's store → false → canAccess stays false → throw.
+        //   access.IsMallWideManager = false â†’ evaluates: access.AssignedStoreIds.Contains(receipt.StoreId)
+        //   The store manager is NOT assigned to the receipt's store â†’ false â†’ canAccess stays false â†’ throw.
         //   Previous test only covered the true (assigned store, success) path.
         var db        = TestInfrastructure.CreateDbContext();
         var mallId    = Guid.NewGuid();
@@ -354,16 +354,16 @@ public sealed class BranchCoverageGap3
             () => svc.GetReceiptDetailsForUserAsync(managerId, tx.Id));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // OffersService — store manager creating offer for assigned store
-    // ══════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // OffersService â€” store manager creating offer for assigned store
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     [Fact]
     public async Task CreateOffer_StoreManagerAssignedStore_Succeeds()
     {
         // Covers GetScopedStoreAsync line 165:
         //   if (!access.IsMallWideManager && !access.AssignedStoreIds.Contains(storeId))
-        //   → !IsMallWideManager = true, !Contains = false → overall FALSE → no throw.
+        //   â†’ !IsMallWideManager = true, !Contains = false â†’ overall FALSE â†’ no throw.
         //   Previous tests only covered the throw path (not assigned).
         var db     = TestInfrastructure.CreateDbContext();
         var mallId  = Guid.NewGuid();
@@ -399,3 +399,4 @@ public sealed class BranchCoverageGap3
         Assert.Equal(storeId, result.StoreId);
     }
 }
+
