@@ -1,0 +1,147 @@
+{
+  "id": "mall-loyalty-local-env",
+  "name": "Mall Loyalty - Local",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7280",
+      "type": "default",
+      "enabled": true,
+      "description": "Base URL of the running backend — change port if different"
+    },
+    {
+      "key": "mallID",
+      "value": "c424a18c-cca0-4523-a01d-d70a87ff059f",
+      "type": "default",
+      "enabled": true,
+      "description": "Mall ID from your PostgreSQL database (Malls table)"
+    },
+    {
+      "key": "managerId",
+      "value": "491ead79-af30-44f6-ac53-d835e5889e72",
+      "type": "default",
+      "enabled": true,
+      "description": "Manager user ID from your PostgreSQL database (Managers table)"
+    },
+    {
+      "key": "sessionId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Auth/Register or Auth/Login request"
+    },
+    {
+      "key": "managerSessionId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Auth/Manager Quick Login request"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set after registration/login"
+    },
+    {
+      "key": "regPhone",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Auth/Register pre-request script (unique per run)"
+    },
+    {
+      "key": "regName",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Auth/Register pre-request script"
+    },
+    {
+      "key": "regPass",
+      "value": "Test@1234",
+      "type": "default",
+      "enabled": true,
+      "description": "Password used for registration and re-login"
+    },
+    {
+      "key": "storeId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Stores/Get All (first store in list)"
+    },
+    {
+      "key": "newStoreId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Stores/Create Store"
+    },
+    {
+      "key": "offerStoreId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Stores/Create — used when creating offers"
+    },
+    {
+      "key": "offerId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Offers/Create Offer"
+    },
+    {
+      "key": "announcementId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Announcements/Create Announcement"
+    },
+    {
+      "key": "couponId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Coupons/Get All (first coupon)"
+    },
+    {
+      "key": "receiptId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Transactions/Add Transaction pre-request script (unique per run)"
+    },
+    {
+      "key": "transactionId",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Transactions/Add Transaction"
+    },
+    {
+      "key": "serialNumber",
+      "value": "",
+      "type": "default",
+      "enabled": true,
+      "description": "Auto-set by Coupons/Redeem (if successful)"
+    },
+    {
+      "key": "dashFrom",
+      "value": "2025-01-01T00:00:00Z",
+      "type": "default",
+      "enabled": true,
+      "description": "Dashboard date range start"
+    },
+    {
+      "key": "dashTo",
+      "value": "2027-12-31T23:59:59Z",
+      "type": "default",
+      "enabled": true,
+      "description": "Dashboard date range end"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}
