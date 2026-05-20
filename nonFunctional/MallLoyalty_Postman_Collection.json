@@ -604,7 +604,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
                   "const json = pm.response.json();",
                   "pm.test('Offer title matches', () => pm.expect(json.title).to.eql('Postman Test Offer'));",
                   "pm.test('Has id', () => pm.expect(json.id).to.be.a('number'));",
