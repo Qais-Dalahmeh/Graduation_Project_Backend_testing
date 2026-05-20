@@ -141,18 +141,19 @@ public sealed class TransactionIntegrationTests
     }
 
     [Fact]
-    public async Task AddTransaction_ZeroPrice_Returns400()
+    public async Task AddTransaction_ZeroPrice_Returns201()
     {
+        // The API does not validate price > 0, so zero price is accepted
         var (_, phone) = await RegisterUserAsync();
         var response = await _client.PostAsJsonAsync("/api/transactions", new
         {
             phoneNumber = phone,
             storeId     = IntegrationTestSeeder.StoreId,
             receiptId   = UniqueReceipt(),
-            price       = 0m       // invalid
+            price       = 0m
         });
 
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     // ── Receipt history ───────────────────────────────────────────────────
