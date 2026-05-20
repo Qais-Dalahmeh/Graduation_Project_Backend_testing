@@ -26,10 +26,18 @@ public sealed class IntegrationTestFactory : WebApplicationFactory<Program>, IAs
         .WithPassword("testpass")
         .Build();
 
-    // ── Start the container before any test runs ─────────────────────────
+    // ── Start the container and run migrations before any test runs ─────────
     public async Task InitializeAsync()
     {
+        // 1. Start the real PostgreSQL Docker container
         await _postgres.StartAsync();
+
+        // 2. Trigger WebApplicationFactory to build the app (calls ConfigureWebHost)
+        //    then run EF Core migrations explicitly against the real DB.
+        //    We do NOT rely on Program.cs migrations because its try/catch swallows errors.
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await db.Database.MigrateAsync();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
