@@ -1,7 +1,7 @@
-{
+﻿{
   "info": {
     "name": "Mall Loyalty System - Automated Tests",
-    "description": "Comprehensive automated API tests for the Mall Loyalty System backend.\nRun folders in order: Auth → Stores → Offers → Announcements → Transactions → Coupons → Dashboard → Chatbot → UserInfo",
+    "description": "Comprehensive automated API tests for the Mall Loyalty System backend.\nRun folders in order: Auth -> Stores -> Offers -> Announcements -> Transactions -> Coupons -> Dashboard -> Chatbot -> UserInfo",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -12,8 +12,8 @@
   "item": [
 
     {
-      "name": "🔐 Auth",
-      "description": "Authentication endpoints — run these first to get a sessionId",
+      "name": "Auth",
+      "description": "Authentication endpoints - run these first to get a sessionId",
       "item": [
 
         {
@@ -30,7 +30,7 @@
                   "pm.environment.set('regPhone', phone);",
                   "pm.environment.set('regName',  uname);",
                   "pm.environment.set('regPass',  'Test@1234');",
-                  "console.log('📱 Registering with phone:', phone);"
+                  "console.log('Registering with phone:', phone);"
                 ]
               }
             },
@@ -45,7 +45,7 @@
                   "pm.test('Role is user',  () => pm.expect(json.role).to.eql('user'));",
                   "pm.environment.set('sessionId', json.sessionId);",
                   "pm.environment.set('userId',    json.userId);",
-                  "console.log('✅ Registered:', pm.environment.get('regPhone'));"
+                  "console.log('Registered:', pm.environment.get('regPhone'));"
                 ]
               }
             }
@@ -77,7 +77,7 @@
                   "pm.test('TotalPoints >= 0', () => pm.expect(json.totalPoints).to.be.at.least(0));",
                   "pm.environment.set('sessionId', json.sessionId);",
                   "pm.environment.set('userId',    json.userId);",
-                  "console.log('✅ Logged in as:', json.name, '| Role:', json.role);"
+                  "console.log('Logged in as:', json.name, '| Role:', json.role);"
                 ]
               }
             }
@@ -106,7 +106,7 @@
                   "pm.test('Role is manager', () => pm.expect(json.role).to.eql('manager'));",
                   "pm.environment.set('managerSessionId', json.sessionId);",
                   "pm.environment.set('managerId', json.userId);",
-                  "console.log('✅ Manager logged in:', json.name);"
+                  "console.log('Manager logged in:', json.name);"
                 ]
               }
             }
@@ -158,7 +158,7 @@
                   "const json = pm.response.json();",
                   "pm.test('Has message', () => pm.expect(json.message).to.be.a('string'));",
                   "",
-                  "// ✅ Re-login automatically so subsequent tests still have a valid session",
+                  "//  Re-login automatically so subsequent tests still have a valid session",
                   "const baseUrl  = pm.environment.get('baseUrl');",
                   "const phone    = pm.environment.get('regPhone');",
                   "const pass     = pm.environment.get('regPass');",
@@ -173,9 +173,9 @@
                   "    const data = res.json();",
                   "    pm.environment.set('sessionId', data.sessionId);",
                   "    pm.environment.set('userId',    data.userId);",
-                  "    console.log('✅ Re-logged in after logout — new sessionId set');",
+                  "    console.log('Re-logged in after logout  new sessionId set');",
                   "  } else {",
-                  "    console.warn('⚠️ Re-login after logout failed:', err);",
+                  "    console.warn('Re-login after logout failed:', err);",
                   "  }",
                   "});"
                 ]
@@ -197,8 +197,8 @@
     },
 
     {
-      "name": "🏪 Stores",
-      "description": "Store CRUD operations — requires manager session",
+      "name": "Stores",
+      "description": "Store CRUD operations  requires manager session",
       "item": [
 
         {
@@ -216,7 +216,7 @@
                   "  pm.test('Store has name', () => pm.expect(json[0].name).to.be.a('string'));",
                   "  pm.test('Store has mallID', () => pm.expect(json[0].mallID).to.be.a('string'));",
                   "  pm.environment.set('storeId', json[0].id);",
-                  "  console.log('✅ Found', json.length, 'stores. First:', json[0].name);",
+                  "  console.log('Found', json.length, 'stores. First:', json[0].name);",
                   "}"
                 ]
               }
@@ -241,7 +241,7 @@
                   "pm.test('Store has id', () => pm.expect(json.id).to.be.a('string'));",
                   "pm.test('Store has name', () => pm.expect(json.name).to.be.a('string'));",
                   "pm.test('Store has categories array', () => pm.expect(json.categories).to.be.an('array'));",
-                  "console.log('✅ Store:', json.name);"
+                  "console.log('Store:', json.name);"
                 ]
               }
             }
@@ -263,7 +263,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Response is array', () => pm.expect(json).to.be.an('array'));",
-                  "console.log('✅ Managed stores:', json.length);"
+                  "console.log('Managed stores:', json.length);"
                 ]
               }
             }
@@ -289,7 +289,7 @@
                   "pm.test('Has mallID', () => pm.expect(json.mallID).to.be.a('string'));",
                   "pm.environment.set('newStoreId', json.id);",
                   "pm.environment.set('offerStoreId', json.id);",
-                  "console.log('✅ Created store ID:', json.id);"
+                  "console.log('Created store ID:', json.id);"
                 ]
               }
             }
@@ -318,7 +318,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Name updated correctly', () => pm.expect(json.name).to.eql('Test Store Updated'));",
-                  "console.log('✅ Store updated:', json.name);"
+                  "console.log('Store updated:', json.name);"
                 ]
               }
             }
@@ -345,7 +345,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
-                  "console.log('✅ Correctly rejected request without session');"
+                  "console.log('Correctly rejected request without session');"
                 ]
               }
             }
@@ -361,8 +361,8 @@
     },
 
     {
-      "name": "📢 Announcements",
-      "description": "Announcements CRUD — requires session",
+      "name": "Announcements",
+      "description": "Announcements CRUD  requires session",
       "item": [
 
         {
@@ -378,7 +378,7 @@
                   "if (json.length > 0) {",
                   "  pm.test('Has title', () => pm.expect(json[0].title).to.be.a('string'));",
                   "  pm.test('Has isActive', () => pm.expect(json[0].isActive).to.be.a('boolean'));",
-                  "  console.log('✅ Announcements:', json.length);",
+                  "  console.log('Announcements:', json.length);",
                   "}"
                 ]
               }
@@ -404,7 +404,7 @@
                   "pm.test('IsActive true', () => pm.expect(json.isActive).to.be.true);",
                   "pm.test('Has id', () => pm.expect(json.id).to.be.a('string'));",
                   "pm.environment.set('announcementId', json.id);",
-                  "console.log('✅ Created announcement:', json.id);"
+                  "console.log('Created announcement:', json.id);"
                 ]
               }
             }
@@ -433,7 +433,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Title updated', () => pm.expect(json.title).to.eql('Updated Announcement Title'));",
-                  "console.log('✅ Announcement updated');"
+                  "console.log('Announcement updated');"
                 ]
               }
             }
@@ -462,7 +462,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('IsActive is false', () => pm.expect(json.isActive).to.be.false);",
-                  "console.log('✅ Announcement deactivated');"
+                  "console.log('Announcement deactivated');"
                 ]
               }
             }
@@ -491,7 +491,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('IsPinned is true', () => pm.expect(json.isPinned).to.be.true);",
-                  "console.log('✅ Announcement pinned');"
+                  "console.log('Announcement pinned');"
                 ]
               }
             }
@@ -520,7 +520,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Response is array', () => pm.expect(json).to.be.an('array'));",
-                  "console.log('✅ Managed announcements:', json.length);"
+                  "console.log('Managed announcements:', json.length);"
                 ]
               }
             }
@@ -540,7 +540,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));",
-                  "console.log('✅ Announcement deleted');"
+                  "console.log('Announcement deleted');"
                 ]
               }
             }
@@ -556,8 +556,8 @@
     },
 
     {
-      "name": "🎁 Offers",
-      "description": "Offers CRUD — requires session",
+      "name": "Offers",
+      "description": "Offers CRUD  requires session",
       "item": [
 
         {
@@ -573,7 +573,7 @@
                   "if (json.length > 0) {",
                   "  pm.test('Offer has title', () => pm.expect(json[0].title).to.be.a('string'));",
                   "  pm.test('Offer has storeId', () => pm.expect(json[0].storeId).to.be.a('string'));",
-                  "  console.log('✅ Offers:', json.length);",
+                  "  console.log('Offers:', json.length);",
                   "}"
                 ]
               }
@@ -593,10 +593,10 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
-                  "// Use newStoreId (created by Stores/04) — fallback to storeId if available",
+                  "// Use newStoreId (created by Stores/04)  fallback to storeId if available",
                   "const sid = pm.environment.get('newStoreId') || pm.environment.get('storeId') || '';",
                   "pm.environment.set('offerStoreId', sid);",
-                  "console.log('🏪 Using storeId for offer:', sid);"
+                  "console.log('Using storeId for offer:', sid);"
                 ]
               }
             },
@@ -610,7 +610,7 @@
                   "pm.test('Has id', () => pm.expect(json.id).to.be.a('number'));",
                   "pm.test('IsActive true', () => pm.expect(json.isActive).to.be.true);",
                   "pm.environment.set('offerId', String(json.id));",
-                  "console.log('✅ Created offer:', json.id);"
+                  "console.log('Created offer:', json.id);"
                 ]
               }
             }
@@ -624,7 +624,7 @@
             "url": "{{baseUrl}}/api/offers",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"storeId\": \"{{offerStoreId}}\",\n  \"title\": \"Postman Test Offer\",\n  \"description\": \"50% off everything — automated test\",\n  \"startAt\": \"2026-01-01T00:00:00Z\",\n  \"endAt\": \"2027-01-01T00:00:00Z\",\n  \"isActive\": true\n}"
+              "raw": "{\n  \"storeId\": \"{{offerStoreId}}\",\n  \"title\": \"Postman Test Offer\",\n  \"description\": \"50% off everything  automated test\",\n  \"startAt\": \"2026-01-01T00:00:00Z\",\n  \"endAt\": \"2027-01-01T00:00:00Z\",\n  \"isActive\": true\n}"
             }
           }
         },
@@ -639,7 +639,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Response is array', () => pm.expect(json).to.be.an('array'));",
-                  "console.log('✅ Managed offers:', json.length);"
+                  "console.log('Managed offers:', json.length);"
                 ]
               }
             }
@@ -661,7 +661,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Title updated', () => pm.expect(json.title).to.eql('Updated Postman Offer'));",
-                  "console.log('✅ Offer updated');"
+                  "console.log('Offer updated');"
                 ]
               }
             }
@@ -690,7 +690,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('IsActive is false', () => pm.expect(json.isActive).to.be.false);",
-                  "console.log('✅ Offer deactivated');"
+                  "console.log('Offer deactivated');"
                 ]
               }
             }
@@ -717,7 +717,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));",
-                  "console.log('✅ Offer deleted');"
+                  "console.log('Offer deleted');"
                 ]
               }
             }
@@ -733,7 +733,7 @@
     },
 
     {
-      "name": "🧾 Transactions",
+      "name": "Transactions",
       "description": "Transaction processing and receipt management",
       "item": [
 
@@ -747,7 +747,7 @@
                   "// Generate a unique receiptId each run to avoid DUPLICATE_RECEIPT errors",
                   "const receiptId = 'POSTMAN-' + Date.now();",
                   "pm.environment.set('receiptId', receiptId);",
-                  "console.log('🧾 Using receiptId:', receiptId);"
+                  "console.log('Using receiptId:', receiptId);"
                 ]
               }
             },
@@ -762,7 +762,7 @@
                   "pm.test('Has newTotalPoints', () => pm.expect(json.newTotalPoints).to.be.a('number'));",
                   "pm.test('Price matches', () => pm.expect(json.price).to.eql(150));",
                   "pm.environment.set('transactionId', String(json.transactionId));",
-                  "console.log('✅ Transaction ID:', json.transactionId, '| Points earned:', json.points);"
+                  "console.log('Transaction ID:', json.transactionId, '| Points earned:', json.points);"
                 ]
               }
             }
@@ -791,7 +791,7 @@
                   "pm.test('Has storeName', () => pm.expect(json.storeName).to.be.a('string'));",
                   "pm.test('Price > 0', () => pm.expect(json.price).to.be.above(0));",
                   "pm.test('ReceiptId matches', () => pm.expect(json.receiptId).to.eql(pm.environment.get('receiptId')));",
-                  "console.log('✅ Receipt:', json.receiptId, '| Store:', json.storeName);"
+                  "console.log('Receipt:', json.receiptId, '| Store:', json.storeName);"
                 ]
               }
             }
@@ -815,7 +815,7 @@
                   "pm.test('Has items array', () => pm.expect(json.items).to.be.an('array'));",
                   "pm.test('Has totalCount', () => pm.expect(json.totalCount).to.be.a('number'));",
                   "pm.test('TotalCount >= 1', () => pm.expect(json.totalCount).to.be.at.least(1));",
-                  "console.log('✅ Total receipts:', json.totalCount);"
+                  "console.log('Total receipts:', json.totalCount);"
                 ]
               }
             }
@@ -834,14 +834,14 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "// Date filter endpoint — accepts 200 (success) or 500 (known backend timezone bug)",
+                  "// Date filter endpoint  accepts 200 (success) or 500 (known backend timezone bug)",
                   "pm.test('Date filter responds', () => pm.expect(pm.response.code).to.be.oneOf([200, 500]));",
                   "if (pm.response.code === 200) {",
                   "  const json = pm.response.json();",
                   "  pm.test('Has items array', () => pm.expect(json.items).to.be.an('array'));",
-                  "  console.log('✅ Receipts in range:', json.totalCount);",
+                  "  console.log('Receipts in range:', json.totalCount);",
                   "} else {",
-                  "  console.warn('⚠️ Date filter returned 500 — known backend timezone issue (UTC offset)');",
+                  "  console.warn('Date filter returned 500  known backend timezone issue (UTC offset)');",
                   "}"
                 ]
               }
@@ -864,7 +864,7 @@
                   "pm.test('Should return error (409 or 400)', () => {",
                   "  pm.expect(pm.response.code).to.be.oneOf([400, 409, 500]);",
                   "});",
-                  "console.log('✅ Duplicate receipt correctly rejected, status:', pm.response.code);"
+                  "console.log('Duplicate receipt correctly rejected, status:', pm.response.code);"
                 ]
               }
             }
@@ -884,7 +884,7 @@
     },
 
     {
-      "name": "🎫 Coupons",
+      "name": "Coupons",
       "description": "Coupon management and redemption",
       "item": [
 
@@ -902,7 +902,7 @@
                   "  pm.test('Coupon has id', () => pm.expect(json[0].id).to.be.a('string'));",
                   "  pm.test('Coupon has type', () => pm.expect(json[0].type).to.be.a('string'));",
                   "  pm.environment.set('couponId', json[0].id);",
-                  "  console.log('✅ Coupons:', json.length, '| First:', json[0].type);",
+                  "  console.log('Coupons:', json.length, '| First:', json[0].type);",
                   "}"
                 ]
               }
@@ -927,7 +927,7 @@
                   "pm.test('All coupons are active', () => {",
                   "  json.forEach(c => pm.expect(c.isActive).to.be.true);",
                   "});",
-                  "console.log('✅ Active coupons:', json.length);"
+                  "console.log('Active coupons:', json.length);"
                 ]
               }
             }
@@ -950,7 +950,7 @@
                   "const json = pm.response.json();",
                   "pm.test('Has id', () => pm.expect(json.id).to.be.a('string'));",
                   "pm.test('Has costPoint', () => pm.expect(json.costPoint).to.be.a('number'));",
-                  "console.log('✅ Coupon:', json.type, '| Cost:', json.costPoint, 'pts');"
+                  "console.log('Coupon:', json.type, '| Cost:', json.costPoint, 'pts');"
                 ]
               }
             }
@@ -972,7 +972,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Response is array', () => pm.expect(json).to.be.an('array'));",
-                  "console.log('✅ User coupons:', json.length);"
+                  "console.log('User coupons:', json.length);"
                 ]
               }
             }
@@ -998,9 +998,9 @@
                   "if (pm.response.code === 200) {",
                   "  pm.test('Has serial number', () => pm.expect(json.serial_number).to.be.a('string'));",
                   "  pm.environment.set('serialNumber', json.serial_number);",
-                  "  console.log('✅ Redeemed, serial:', json.serial_number);",
+                  "  console.log('Redeemed, serial:', json.serial_number);",
                   "} else {",
-                  "  console.log('ℹ️ Insufficient points or already redeemed');",
+                  "  console.log('Insufficient points or already redeemed');",
                   "}"
                 ]
               }
@@ -1024,14 +1024,14 @@
     },
 
     {
-      "name": "📊 Dashboard",
-      "description": "Analytics and management dashboard — manager only",
+      "name": "Dashboard",
+      "description": "Analytics and management dashboard  manager only",
       "event": [
         {
           "listen": "prerequest",
           "script": {
             "exec": [
-              "// Set UTC date range for all dashboard requests — avoids timezone 500 errors",
+              "// Set UTC date range for all dashboard requests  avoids timezone 500 errors",
               "pm.environment.set('dashFrom', '2025-01-01T00:00:00Z');",
               "pm.environment.set('dashTo',   '2027-12-31T23:59:59Z');",
               "pm.environment.set('dashFromInvalid', '2027-01-01T00:00:00Z');",
@@ -1055,7 +1055,7 @@
                   "pm.test('Has totalSalesAmount', () => pm.expect(json.totalSalesAmount).to.be.a('number'));",
                   "pm.test('Has totalPointsIssued', () => pm.expect(json.totalPointsIssued).to.be.a('number'));",
                   "pm.test('Has activeOffersCount', () => pm.expect(json.activeOffersCount).to.be.a('number'));",
-                  "console.log('✅ Summary — Transactions:', json.totalTransactions, '| Sales:', json.totalSalesAmount);"
+                  "console.log('Summary  Transactions:', json.totalTransactions, '| Sales:', json.totalSalesAmount);"
                 ]
               }
             }
@@ -1079,7 +1079,7 @@
                   "pm.test('Has totalSalesAmount', () => pm.expect(json.totalSalesAmount).to.be.a('number'));",
                   "pm.test('Has dailySales array', () => pm.expect(json.dailySales).to.be.an('array'));",
                   "pm.test('Has topStores array', () => pm.expect(json.topStores).to.be.an('array'));",
-                  "console.log('✅ Sales:', json.totalSalesAmount, '| Top stores:', json.topStores.length);"
+                  "console.log('Sales:', json.totalSalesAmount, '| Top stores:', json.topStores.length);"
                 ]
               }
             }
@@ -1102,7 +1102,7 @@
                   "const json = pm.response.json();",
                   "pm.test('Has totalPointsIssued', () => pm.expect(json.totalPointsIssued).to.be.a('number'));",
                   "pm.test('Has dailyIssued array', () => pm.expect(json.dailyIssued).to.be.an('array'));",
-                  "console.log('✅ Total points issued:', json.totalPointsIssued);"
+                  "console.log('Total points issued:', json.totalPointsIssued);"
                 ]
               }
             }
@@ -1125,7 +1125,7 @@
                   "const json = pm.response.json();",
                   "pm.test('Has isScopeLimited', () => pm.expect(json.isScopeLimited).to.be.a('boolean'));",
                   "pm.test('Has redemptionRate', () => pm.expect(json.redemptionRate).to.be.a('number'));",
-                  "console.log('✅ Coupon stats — Redeemed:', json.totalRedeemedCoupons, '| Rate:', json.redemptionRate + '%');"
+                  "console.log('Coupon stats  Redeemed:', json.totalRedeemedCoupons, '| Rate:', json.redemptionRate + '%');"
                 ]
               }
             }
@@ -1149,7 +1149,7 @@
                   "pm.test('Has totalOffers', () => pm.expect(json.totalOffers).to.be.a('number'));",
                   "pm.test('Has totalAnnouncements', () => pm.expect(json.totalAnnouncements).to.be.a('number'));",
                   "pm.test('Has categoryDistribution', () => pm.expect(json.categoryDistribution).to.be.an('array'));",
-                  "console.log('✅ Activity — Offers:', json.totalOffers, '| Announcements:', json.totalAnnouncements);"
+                  "console.log('Activity  Offers:', json.totalOffers, '| Announcements:', json.totalAnnouncements);"
                 ]
               }
             }
@@ -1169,7 +1169,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-                  "console.log('✅ Invalid date range correctly rejected');"
+                  "console.log('Invalid date range correctly rejected');"
                 ]
               }
             }
@@ -1185,8 +1185,8 @@
     },
 
     {
-      "name": "🤖 Chatbot",
-      "description": "AI Chatbot — no session required",
+      "name": "Chatbot",
+      "description": "AI Chatbot  no session required",
       "item": [
 
         {
@@ -1203,11 +1203,11 @@
                   "  pm.test('Has botResponse', () => pm.expect(json.botResponse).to.be.a('string').and.not.empty);",
                   "  pm.test('Has userMessage', () => pm.expect(json.userMessage).to.be.a('string'));",
                   "  pm.test('Has matchSource', () => pm.expect(json.matchSource).to.be.a('string'));",
-                  "  console.log('✅ Bot answered:', json.botResponse.substring(0, 80) + '...');",
+                  "  console.log('Bot answered:', json.botResponse.substring(0, 80) + '...');",
                   "} else {",
                   "  const errCode = json.error && json.error.code;",
                   "  pm.test('Known error code', () => pm.expect(errCode).to.be.oneOf(['CHATBOT_SETTING_MISSING','AI_PROVIDER_ERROR','VALUE_REQUIRED']));",
-                  "  console.warn('⚠️ Chatbot not configured — error:', errCode);",
+                  "  console.warn('Chatbot not configured  error:', errCode);",
                   "}"
                 ]
               }
@@ -1239,9 +1239,9 @@
                   "pm.test('Chatbot Arabic endpoint responds', () => pm.expect(code).to.be.oneOf([200, 400]));",
                   "if (code === 200) {",
                   "  pm.test('Has botResponse', () => pm.expect(json.botResponse).to.be.a('string').and.not.empty);",
-                  "  console.log('✅ Arabic bot answered:', json.botResponse.substring(0, 80));",
+                  "  console.log('Arabic bot answered:', json.botResponse.substring(0, 80));",
                   "} else {",
-                  "  console.warn('⚠️ Chatbot not configured — error:', json.error && json.error.code);",
+                  "  console.warn('Chatbot not configured  error:', json.error && json.error.code);",
                   "}"
                 ]
               }
@@ -1271,7 +1271,7 @@
                   "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Response is array', () => pm.expect(json).to.be.an('array'));",
-                  "console.log('✅ Chat history items:', json.length);"
+                  "console.log('Chat history items:', json.length);"
                 ]
               }
             }
@@ -1287,8 +1287,8 @@
     },
 
     {
-      "name": "👤 User Info",
-      "description": "User information endpoints — requires session",
+      "name": "User Info",
+      "description": "User information endpoints  requires session",
       "item": [
 
         {
@@ -1302,7 +1302,7 @@
                   "const json = pm.response.json();",
                   "pm.test('Has totalPoints', () => pm.expect(json.totalPoints).to.be.a('number'));",
                   "pm.test('TotalPoints >= 0', () => pm.expect(json.totalPoints).to.be.at.least(0));",
-                  "console.log('✅ User total points:', json.totalPoints);"
+                  "console.log('User total points:', json.totalPoints);"
                 ]
               }
             }
@@ -1318,8 +1318,8 @@
     },
 
     {
-      "name": "🧪 Validation Tests",
-      "description": "Input validation — every invalid input must return 400 Bad Request",
+      "name": "Validation Tests",
+      "description": "Input validation  every invalid input must return 400 Bad Request",
       "item": [
 
         {
@@ -1329,7 +1329,7 @@
             "const json = pm.response.json();",
             "pm.test('Has error wrapper', () => pm.expect(json.error).to.be.an('object'));",
             "pm.test('Has error.code', () => pm.expect(json.error.code).to.be.a('string'));",
-            "console.log('✅ Invalid phone correctly rejected, code:', json.error && json.error.code);"
+            "console.log('Invalid phone correctly rejected, code:', json.error && json.error.code);"
           ]}}],
           "request": {
             "method": "POST",
@@ -1343,7 +1343,7 @@
           "name": "02 - Register Empty Name - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Empty name correctly rejected');"
+            "console.log('Empty name correctly rejected');"
           ]}}],
           "request": {
             "method": "POST",
@@ -1357,7 +1357,7 @@
           "name": "03 - Register Empty Password - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Empty password correctly rejected');"
+            "console.log('Empty password correctly rejected');"
           ]}}],
           "request": {
             "method": "POST",
@@ -1373,7 +1373,7 @@
             "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
             "const json = pm.response.json();",
             "pm.test('Has error.code', () => pm.expect(json.error.code).to.be.a('string'));",
-            "console.log('✅ Duplicate phone correctly rejected, code:', json.error && json.error.code);"
+            "console.log('Duplicate phone correctly rejected, code:', json.error && json.error.code);"
           ]}}],
           "request": {
             "method": "POST",
@@ -1387,7 +1387,7 @@
           "name": "05 - Create Offer Null Title - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Null offer title correctly rejected');"
+            "console.log('Null offer title correctly rejected');"
           ]}}],
           "request": {
             "method": "POST",
@@ -1404,7 +1404,7 @@
           "name": "06 - Create Offer Start After End - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Invalid offer dates correctly rejected');"
+            "console.log('Invalid offer dates correctly rejected');"
           ]}}],
           "request": {
             "method": "POST",
@@ -1421,7 +1421,7 @@
           "name": "07 - Create Announcement Empty Title - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Empty announcement title correctly rejected');"
+            "console.log('Empty announcement title correctly rejected');"
           ]}}],
           "request": {
             "method": "POST",
@@ -1438,7 +1438,7 @@
           "name": "08 - Dashboard Invalid Date Range - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Invalid dashboard date range correctly rejected');"
+            "console.log('Invalid dashboard date range correctly rejected');"
           ]}}],
           "request": {
             "method": "GET",
@@ -1451,7 +1451,7 @@
           "name": "09 - Get Store Not Found - Expect 404",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));",
-            "console.log('✅ Non-existent store correctly returns 404');"
+            "console.log('Non-existent store correctly returns 404');"
           ]}}],
           "request": {
             "method": "GET",
@@ -1464,7 +1464,7 @@
           "name": "10 - Add Transaction Missing Phone - Expect 400",
           "event": [{ "listen": "test", "script": { "exec": [
             "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
-            "console.log('✅ Missing phone correctly rejected');"
+            "console.log('Missing phone correctly rejected');"
           ]}}],
           "request": {
             "method": "POST",
@@ -1478,7 +1478,7 @@
     },
 
     {
-      "name": "🔒 Security Tests",
+      "name": "Security Tests",
       "description": "Verify that authorization works correctly",
       "item": [
 
@@ -1490,7 +1490,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
-                  "console.log('✅ Dashboard blocked without session');"
+                  "console.log('Dashboard blocked without session');"
                 ]
               }
             }
@@ -1510,7 +1510,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 403 Forbidden', () => pm.response.to.have.status(403));",
-                  "console.log('✅ Store creation blocked for regular user');"
+                  "console.log('Store creation blocked for regular user');"
                 ]
               }
             }
@@ -1537,7 +1537,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 403 Forbidden', () => pm.response.to.have.status(403));",
-                  "console.log('✅ Dashboard blocked for regular user');"
+                  "console.log('Dashboard blocked for regular user');"
                 ]
               }
             }
@@ -1557,7 +1557,7 @@
               "script": {
                 "exec": [
                   "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
-                  "console.log('✅ Invalid session correctly rejected');"
+                  "console.log('Invalid session correctly rejected');"
                 ]
               }
             }
@@ -1574,3 +1574,5 @@
 
   ]
 }
+
+
