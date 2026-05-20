@@ -26,18 +26,19 @@ public sealed class IntegrationTestFactory : WebApplicationFactory<Program>, IAs
         .WithPassword("testpass")
         .Build();
 
-    // ── Start the container and run migrations before any test runs ─────────
+    // ── Start the container and create schema before any test runs ──────────
     public async Task InitializeAsync()
     {
         // 1. Start the real PostgreSQL Docker container
         await _postgres.StartAsync();
 
-        // 2. Trigger WebApplicationFactory to build the app (calls ConfigureWebHost)
-        //    then run EF Core migrations explicitly against the real DB.
-        //    We do NOT rely on Program.cs migrations because its try/catch swallows errors.
+        // 2. Trigger app build (calls ConfigureWebHost which sets the connection string)
+        //    then create the full schema directly from the EF Core model.
+        //    EnsureCreatedAsync is more reliable than MigrateAsync in test environments
+        //    because it creates all tables directly without depending on migration files.
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await db.Database.MigrateAsync();
+        await db.Database.EnsureCreatedAsync();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -48,8 +49,8 @@ public sealed class IntegrationTestFactory : WebApplicationFactory<Program>, IAs
             {
                 // Point backend to the real PostgreSQL container
                 ["ConnectionStrings:DefaultConnection"] = _postgres.GetConnectionString(),
-                // Run migrations so schema is created
-                ["RunMigrations"]                       = "true",
+                // Disable Program.cs migrations — we run schema creation ourselves
+                ["RunMigrations"]                       = "false",
                 // Stub chatbot config so app doesn't crash
                 ["ChatbotSettings:ApiKey"]              = "test-key",
                 ["ChatbotSettings:Endpoint"]            = "http://localhost:9999/fake"
