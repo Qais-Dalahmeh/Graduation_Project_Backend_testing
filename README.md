@@ -1,36 +1,133 @@
-# Graduation Project - Backend (Loyalty & Rewards System) 🚀
+# Mall Loyalty System — Testing Suite
 
-This is the backend system for a Graduation Project focused on a **Loyalty and Rewards Management System**. The project is built using **ASP.NET Core** and features a robust testing architecture covering both Unit and Integration tests.
+Complete testing suite for the Mall Loyalty backend system.  
+Covers Unit, Integration, Non-Functional, and API tests.
 
-## 🛠 Tech Stack
-* **Framework:** .NET 8 / ASP.NET Core Web API
-* **Database:** Entity Framework Core (SQL Server / In-Memory for Testing)
-* **Testing:** xUnit, FluentAssertions, WebApplicationFactory
-* **Documentation:** Swagger UI (OpenAPI)
+---
 
-## 🏗 Project Architecture
-The project follows a **Service-Pattern Architecture** to ensure clean separation of concerns:
-* **Controllers:** Handling API endpoints and HTTP requests.
-* **Services:** Containing the core business logic (Points calculation, Coupon redemption, etc.).
-* **Data Layer:** EF Core DbContext with Fluent API configurations.
+## Repository Structure
 
-## 🧪 Testing Strategy (The Strong Point)
-The project stands out with its high code coverage and automated testing suites:
+```
+├── Backend/                  # ASP.NET Core Backend + All C# Tests
+│   ├── Graduation_Project_Backend.Tests/          # Unit & Branch Coverage Tests
+│   ├── Graduation_Project_Backend.NonFunctionalTests/ # Performance & Reliability Tests
+│   └── Graduation_Project_Backend.IntegrationTests/   # Real PostgreSQL via Docker
+│
+├── Flutter/                  # Flutter Frontend Integration Tests
+│   └── test/integration/     # 27 tests against real Azure backend
+│
+├── nonFunctional/            # Postman Collection (58 API requests)
+│   ├── MallLoyalty_Postman_Collection.json
+│   └── MallLoyalty_Environment.json
+│
+└── CoverageReport/           # HTML Coverage Report (98.7% line coverage)
+    └── index.html
+```
 
-### 1. Unit Testing
-Located in the `UnitTesting` directory. These tests verify the internal logic of services in isolation.
-* **Feature Coverage:** Points calculation, Phone number normalization, Store name trimming, and Security checks.
-* **Mocking:** Using In-Memory databases to ensure fast and isolated test runs.
+---
 
-### 2. Integration Testing
-Located in the `IntegrationTesting` directory. These tests verify the interaction between the API, Database, and Middleware.
-* **Custom Web Application Factory:** Used to bootstrap the API in memory for testing.
-* **Scenarios:** Full User Registration flow, API Validation (400 Bad Request handling), and DB Default constraints.
+## 1 — Backend Tests (C# / xUnit)
 
+### Requirements
+- .NET 8 SDK
+- Docker Desktop (for Integration Tests only)
 
-
-## 🚀 How to Run the Tests
-To execute the test suite, run the following command in the terminal:
-
+### Run Unit Tests
 ```bash
-dotnet test
+cd Backend
+dotnet test Graduation_Project_Backend.Tests
+```
+
+### Run Non-Functional Tests
+```bash
+cd Backend
+dotnet test Graduation_Project_Backend.NonFunctionalTests
+```
+
+### Run Integration Tests (requires Docker running)
+```bash
+cd Backend
+dotnet test Graduation_Project_Backend.IntegrationTests
+```
+
+### Run All Tests + Coverage
+```bash
+cd Backend
+dotnet test Graduation_Project_Backend.Tests \
+  --collect:"XPlat Code Coverage" \
+  --results-directory TestResults/Coverage
+```
+
+---
+
+## 2 — Coverage Report
+
+Open in browser:
+```
+CoverageReport/index.html
+```
+
+Results:
+- **Line Coverage: 98.7%**
+- **Branch Coverage: 89.1%**
+- **Method Coverage: 96.5%**
+
+---
+
+## 3 — Postman API Tests (58 requests)
+
+### Import into Postman
+1. Open Postman
+2. Import → `nonFunctional/MallLoyalty_Postman_Collection.json`
+3. Import → `nonFunctional/MallLoyalty_Environment.json`
+4. Select environment **"Mall Loyalty - Local"** (top right)
+5. Click **Run Collection**
+
+### Folders covered
+| Folder | Description |
+|--------|-------------|
+| Auth | Register, Login, Logout |
+| Stores | List, Details |
+| Offers | CRUD + Active offers |
+| Coupons | List, Redeem, User coupons |
+| Transactions | Add receipt, History |
+| Dashboard | Summary, Sales, Points, Activity |
+| Validation Tests | Invalid inputs → 400/404/409 |
+
+---
+
+## 4 — Flutter Integration Tests (27 tests)
+
+Tests the Flutter frontend services against the real Azure backend.
+
+### Requirements
+- Flutter SDK 3.x (`flutter --version`)
+
+### Run
+```bash
+cd Flutter
+flutter pub get
+flutter test test/integration/
+```
+
+### Test files
+| File | Tests | What it tests |
+|------|-------|---------------|
+| `auth_integration_test.dart` | 9 | Register, Login, error cases |
+| `api_integration_test.dart` | 9 | Stores, Coupons, Announcements, Receipts |
+| `offers_integration_test.dart` | 4 | Offers list and validation |
+| `end_to_end_integration_test.dart` | 5 | Full user journey end-to-end |
+
+---
+
+## Test Summary
+
+| Type | Count | Tool |
+|------|-------|------|
+| Unit Tests | ~80 | xUnit + InMemory EF |
+| Branch Coverage Tests | ~45 | xUnit |
+| Non-Functional Tests | ~15 | xUnit |
+| Backend Integration Tests | 43 | Testcontainers + PostgreSQL |
+| Flutter Integration Tests | 27 | flutter test + Azure API |
+| Postman API Tests | 58 requests | Postman |
+| **Total** | **260+** | |

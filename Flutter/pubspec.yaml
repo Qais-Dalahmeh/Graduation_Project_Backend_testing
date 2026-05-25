@@ -1,0 +1,53 @@
+name: g_project
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  cupertino_icons: ^1.0.8
+  dio: ^5.4.0
+  dio_cookie_manager: ^3.0.0
+  cookie_jar: ^4.0.0
+  shared_preferences: ^2.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/images/logo3.png
+    - assets/images/logo_name.png
+    - assets/images/splash.png
+    - assets/images/star(1).png
+    - assets/images/bag.png
+    - assets/images/gift1.png
+    - assets/images/gift-voucher.png
+    - assets/images/discount.png
+    - assets/images/coupon.png
+    - assets/images/logout.png
+    - assets/images/qr.png
+    - assets/images/max_logo.jpeg
+    - assets/images/subway_logo.png
+    - assets/images/coin.png
+    - assets/images/mall.jpg
+    - assets/images/logo3.png
+    - assets/maps/
+  fonts:
+    - family: Judson
+      fonts:
+        - asset: assets/fonts/Judson-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Judson-Bold.ttf
+          weight: 700

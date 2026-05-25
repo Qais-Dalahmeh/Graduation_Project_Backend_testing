@@ -4,10 +4,10 @@
   "values": [
     {
       "key": "baseUrl",
-      "value": "https://localhost:7280",
+      "value": "https://yallarewards-hfhxdxerb8caa8g9.switzerlandnorth-01.azurewebsites.net",
       "type": "default",
       "enabled": true,
-      "description": "Base URL of the running backend — change port if different"
+      "description": "Azure deployed backend URL"
     },
     {
       "key": "mallID",

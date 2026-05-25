@@ -374,3 +374,21 @@ Backend/.env
 e2e/playwright-report/
 e2e/test-results/
 e2e/node_modules/
+
+# Claude AI files - never commit these
+.claude/
+**/.claude/
+*.claude
+
+# Flutter build artifacts
+Flutter/.dart_tool/
+Flutter/.flutter-plugins
+Flutter/.flutter-plugins-dependencies
+Flutter/build/
+Flutter/.packages
+
+# Node / Newman
+nonFunctional/node_modules/
+nonFunctional/package-lock.json
+nonFunctional/package.json
+nonFunctional/reports/
