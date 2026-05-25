@@ -122,12 +122,11 @@ flutter test test/integration/
 
 ## Test Summary
 
-| Type | Count | Tool |
-|------|-------|------|
-| Unit Tests | ~80 | xUnit + InMemory EF |
-| Branch Coverage Tests | ~45 | xUnit |
-| Non-Functional Tests | ~15 | xUnit |
-| Backend Integration Tests | 43 | Testcontainers + PostgreSQL |
-| Flutter Integration Tests | 27 | flutter test + Azure API |
-| Postman API Tests | 58 requests | Postman |
-| **Total** | **260+** | |
+| Project | Count | Tool |
+|---------|-------|------|
+| `Graduation_Project_Backend.Tests` (Unit + Branch + Service + Functional) | **313** | xUnit + InMemory EF |
+| `Graduation_Project_Backend.NonFunctionalTests` (Performance + Reliability) | **64** | xUnit |
+| `Graduation_Project_Backend.IntegrationTests` (Real PostgreSQL via Docker) | **43** | Testcontainers + PostgreSQL |
+| Flutter Integration Tests (Flutter → Azure Backend → DB) | **27** | flutter test |
+| Postman API Tests | **58 requests** | Postman |
+| **Total Automated Tests** | **447** | |
